@@ -37,9 +37,13 @@ const App = () => {
         <ScrollView>
         <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
         <View className="bg-[#ABE87A] mt-6 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-            <Text className="text-xl">"{result ? result : resulterror}"</Text>
+          
+            <Text className="text-xl">{result && result}   kg</Text>
+           
         </View>
-   </ScrollView>
+        <View className="items-center justify-center mt-11">
+        <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>
+         </ScrollView>
       </KeyboardAvoidingView>
     </ImageBackground>
   </View>

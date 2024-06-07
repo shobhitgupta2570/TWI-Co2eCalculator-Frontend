@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
   const [isChecked, setIsChecked] = useState(false);
+  // const [vehiclePart1, setVehiclePart1] = useState('');
+  // const [vehiclePart2, setVehiclePart2] = useState('');
   const navigation = useNavigation();   
   const dispatch = useDispatch(); 
         const handleCheckBox = () => {
@@ -69,7 +71,7 @@ const App = () => {
       <Formik
      initialValues={{ VechileNumber: '' , SourcePincode: '', DestinationPincode:'' , LoadedWeight:'' , VechileType: '' , MobilisationDistance:'', DeMobilisationDistance:'' }}
      onSubmit={async (values) => {
-     
+      // values.VechileNumber = vehiclePart1 + vehiclePart2;
       if (isChecked) {
         console.log(values);
         dispatch(calculateResultAsync(values));
@@ -92,6 +94,22 @@ const App = () => {
            value={values.VechileNumber}
            placeholder='Vechile Number'
          />
+         {/* <View className="flex-row items-center mx-[12%]">
+         <TextInput
+              className=" my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+              onChangeText={(text) => setVehiclePart1(text)}
+              onBlur={handleBlur('VechileNumber')}
+              value={vehiclePart1}
+              placeholder='Part 1'
+            />
+            <TextInput
+              className=" my-2 mx-[15%] rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+              onChangeText={(text) => setVehiclePart2(text)}
+              onBlur={handleBlur('VechileNumber')}
+              value={vehiclePart2}
+              placeholder='Part 2'
+            />
+            </View> */}
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('SourcePincode')}
            onBlur={handleBlur('SourcePincode')}
@@ -113,32 +131,10 @@ const App = () => {
            placeholder='Loaded Weight'
            keyboardType="numeric"
          />
-         <Text className="text-lg ml-10 mb-1 font-">Confirm vechile type</Text>
-          {/* <TextInput className="mx-[12%] my-1 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[90px]"
-           onChangeText={handleChange('VechileNumber')}
-           onBlur={handleBlur('VechileNumber')}
-           value={values.VechileNumber}
-           placeholder='Type'
-         /> */}
-         <View className="mx-[12%]  rounded-xl border-2 text-black-200 text-lg h-10 flex justify-center font-semibold pl-[90px]">
-         <Picker className="text-black-200 text-lg font-semibold pl-[90px]"
-            enabled={true}
-            mode="dropdown"
-            placeholder="Vechile Type"
-            onValueChange={handleChange('VechileType')}
-            selectedValue={values.VechileType}
-      >
-       {vehicleType.map((item) => {
-        return(<Picker.Item
-              label={item.toString()}
-              value={item.toString()}
-              key={item.toString()} />)
-        })}
-
-     </Picker>
-     </View>
+       
+        
          <Text className="text-xl ml-10 mb-1">Additional Details</Text>
-           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[40px]"
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
            onChangeText={handleChange('MobilisationDistance')}
            onBlur={handleBlur('MobilisationDistance')}
            value={values.MobilisationDistance}
@@ -153,7 +149,7 @@ const App = () => {
            keyboardType="numeric"
          />
           
-        <View className="mx-[65px]  flex-row">
+        <View className="mx-[65px]  flex-row justify-center">
          <CheckBox
         title='By checking this box, you agree to our terms and conditions'
         checked={isChecked}

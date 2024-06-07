@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image, Modal} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik, Form, Field } from 'formik';
@@ -17,7 +17,6 @@ const signUpSchema = yup.object().shape({
   
   userName: yup
     .string()
-    .matches(/(\w.+\s).+/, 'Enter at least 2 names')
     .required('User name is required'),
   // image: yup
   //   .string()
@@ -62,9 +61,14 @@ const App = () => {
   const dispatch = useDispatch();  
   const userInfor = useSelector(selectUserInfo);
   const isOtpVerified = useSelector(selectIsOtpVerified);
-  const isUserAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [modalVisible, setModalVisible] = useState(false);
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Navigate to the next page
+      navigation.navigate('Calculator');
+    }
+  }, [isAuthenticated, navigation]);
   const openModal = () => {
     setModalVisible(true);
   };
@@ -105,79 +109,7 @@ const App = () => {
     }
   };
 
-  // const handleSubmit = async (values) => {
-  //   const formData = new FormData();
-  //   formData.append('photo', {
-  //     uri: values.image.uri,
-  //     name: 'photo.jpg',
-  //     type: 'image/jpeg',
-  //   });
-
-  //   // Append other form fields to formData if necessary
-  //   for (const key in values) {
-  //     if (key !== 'image') {
-  //       if (key === 'pin' || key === 'mobileNumber') {
-  //         // Convert pin to a number
-  //         formData.append(key, Number(values[key]));
-  //       } else {
-  //         formData.append(key, values[key]);
-  //       }
-  //     }
-  //   }
-  //   if (isChecked) {
-  //       console.log(values);
-  //       console.log(formData);
-  //       dispatch(signupAsync(formData));
-  //       // Navigate to the next page
-  //       if(userInfo){
-  //       navigation.navigate('Calculator');}
-  //     } else {
-  //       // Do nothing, stay on the same page
-  //     }
-
-  //   // try {
-  //   //   const response = await axios.post('http://192.168.1.8:8000/api/v1/upload', formData, {
-  //   //     headers: {
-  //   //       'Content-Type': 'multipart/form-data',
-  //   //     },
-  //   //   });
-  //   //   console.log('Upload success', response.data);
-  //   // } catch (error) {
-  //   //   console.error('Upload error', error);
-  //   // }
-  // };
-
-    //     const cities = [
-    //       {name:"Los Angeles", id: 1},
-    //       {name:"Philadelphia", id: 2},
-    //       {name:"Chicago", id: 3},
-    //       {name:"Washington DC", id: 4},
-    //       {name:"New York", id: 5},
-    //       {name:"San Diego", id: 6},
-    //       {name:"Fort Worth", id: 7},
-    //       {name:"Houston", id: 8},
-    //       {name:"Cleveland", id: 9},
-    //       {name:"Pittsburg", id: 10},
-    //       {name:"Detroit", id: 11},
-    //       {name:"Jacksonville", id: 12},
-    //       {name:"Denver", id: 13},
-    //       {name:"Columbus", id: 14},
-    //       {name:"El Paso", id: 15},
-    //       {name:"New Orleans", id: 16},
-    //       {name:"Cincinnati", id: 17},
-    //       {name:"Nashville", id: 18},
-    //       {name:"Miami", id: 19},
-    //       {name:"Tampa", id: 20},
-    //       {name:"Bakersfield", id: 22},
-    //       {name:"Tuscon", id: 23},
-    //       {name:"Baltimore", id: 25},
-    //       {name:"St Louis", id: 26},
-    //       {name:"Las Vegas", id: 27},
-    //       {name:"Memphis", id: 28},
-    //       {name:"Seatle", id: 29},
-    //       {name:"San Fransisco", id: 30},
-     
-    //  ]
+  
 
     
   return(
@@ -202,17 +134,14 @@ const App = () => {
      validationSchema={signUpSchema}
      onSubmit={(values) => {
       if (isChecked) {
-              console.log(values);
+              console.log(isOtpVerified);
               if(isOtpVerified){
               dispatch(signupAsync(values));
-      }
-              // Navigate to the next page
-              // console.log("preSuccess")
-              
-              // if(isUserAuthenticated){
-              //   console.log("success")
+      }            
+               if(isAuthenticated){
+                // console.log("success")
               navigation.navigate('Calculator');
-            // }
+            }
             } else {
               // Do nothing, stay on the same page
             }
@@ -247,12 +176,17 @@ const App = () => {
            value={values.mobileNumber}
            placeholder='Mobile Number'
            keyboardType="numeric"
+           editable={!isOtpVerified}
          />
           {(errors.mobileNumber && touched.mobileNumber) &&
                   <Text style={{ color: 'red' }}>{errors.mobileNumber}</Text>
                 }
-         <TouchableOpacity onPress={() => handleSendOtp(values.mobileNumber)} className="mx-auto px-[20px] bg-white"><Text className="text-blue-800 font-bold">Send Otp</Text></TouchableOpacity>
-         <Modal
+          {isOtpVerified ?
+          <TouchableOpacity onPress={() => handleSendOtp(values.mobileNumber)} className="mx-auto px-[20px] bg-white"><Text className="text-green-800 font-bold">Otp Verified</Text></TouchableOpacity>
+          
+         :<TouchableOpacity onPress={() => handleSendOtp(values.mobileNumber)} className="mx-auto px-[20px] bg-white"><Text className="text-blue-800 font-bold">Send Otp</Text></TouchableOpacity>
+          }
+          <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -297,7 +231,7 @@ const App = () => {
                   <Text style={{ color: 'red' }}>{errors.confirmPin}</Text>
                 }         
           
-        <View className="mx-[65px]  flex-row">
+        <View className="mx-[65px]  flex-row  justify-center">
          <CheckBox
         title='By checking this box, you agree to our terms and conditions'
         checked={isChecked}
@@ -314,7 +248,7 @@ const App = () => {
        </View>
      )}
    </Formik>
-   <TouchableOpacity onPress={()=>navigation.navigate("Login")} className="flex-row mx-auto"><Text className="  text-xl font-[600]">Existing User ?</Text>
+   <TouchableOpacity onPress={()=>navigation.navigate("Login")} className="flex-row mx-auto mb-11"><Text className="  text-xl font-[600]">Existing User ?</Text>
    <Text className="  text-xl text-blue-700 font-[800]"> Login</Text>
    </TouchableOpacity>
    </ScrollView>

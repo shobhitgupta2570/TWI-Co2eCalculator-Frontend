@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shobhitgupta2570.co2ecalculator"
     },
     "android": {
       "permissions": [
@@ -24,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shobhitgupta2570.co2ecalculator"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik, Form, Field } from 'formik';
@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAsync, selectUserInfo } from './calculatorSlice';
+import { loginAsync, selectIsAuthenticated, selectUserInfo } from './calculatorSlice';
 
 const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const signUpSchema = yup.object().shape({
@@ -20,10 +20,12 @@ const signUpSchema = yup.object().shape({
   .string()
   .matches(phoneRegex, 'Enter a valid phone number')
   .required('Phone number is required'),
-    pin: yup
-    .string()
-    .matches(phoneRegex, 'Enter a valid pin number')
-    .required('Pin is required'),
+  pin: yup
+  .string()
+  .min(4, 'Length should be 4')
+   .max(4, 'Length should be 4')
+  // .matches(phoneRegex, 'Enter a valid pin number')
+  .required('Pin is required'),
    
   // email: yup
   //   .string()
@@ -52,7 +54,14 @@ const App = () => {
   };
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
  
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Navigate to the next page
+      navigation.navigate('Calculator');
+    }
+  }, [isAuthenticated, navigation]);
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -95,39 +104,6 @@ const App = () => {
     //   console.error('Upload error', error);
     // }
   };
-
-    //     const cities = [
-    //       {name:"Los Angeles", id: 1},
-    //       {name:"Philadelphia", id: 2},
-    //       {name:"Chicago", id: 3},
-    //       {name:"Washington DC", id: 4},
-    //       {name:"New York", id: 5},
-    //       {name:"San Diego", id: 6},
-    //       {name:"Fort Worth", id: 7},
-    //       {name:"Houston", id: 8},
-    //       {name:"Cleveland", id: 9},
-    //       {name:"Pittsburg", id: 10},
-    //       {name:"Detroit", id: 11},
-    //       {name:"Jacksonville", id: 12},
-    //       {name:"Denver", id: 13},
-    //       {name:"Columbus", id: 14},
-    //       {name:"El Paso", id: 15},
-    //       {name:"New Orleans", id: 16},
-    //       {name:"Cincinnati", id: 17},
-    //       {name:"Nashville", id: 18},
-    //       {name:"Miami", id: 19},
-    //       {name:"Tampa", id: 20},
-    //       {name:"Bakersfield", id: 22},
-    //       {name:"Tuscon", id: 23},
-    //       {name:"Baltimore", id: 25},
-    //       {name:"St Louis", id: 26},
-    //       {name:"Las Vegas", id: 27},
-    //       {name:"Memphis", id: 28},
-    //       {name:"Seatle", id: 29},
-    //       {name:"San Fransisco", id: 30},
-     
-    //  ]
-
     
   return(
   <View className=" h-[100%] ">
@@ -151,12 +127,16 @@ const App = () => {
      validationSchema={signUpSchema}
      onSubmit={(values)=>{
         if(isChecked) {
-            console.log(values);
+          console.log(isAuthenticated)
+          console.log(values);
             dispatch(loginAsync(values));
+          if(isAuthenticated){
+            
             // api for Login
             
             // Navigate to the next page
             navigation.navigate('Calculator');
+          }
      }else{
 
     }
@@ -190,7 +170,7 @@ const App = () => {
 
       
           
-        <View className="mx-[65px]  flex-row">
+        <View className="mx-[65px]  flex-row justify-center">
          <CheckBox
         title='By checking this box, you agree to our terms and conditions'
         checked={isChecked}

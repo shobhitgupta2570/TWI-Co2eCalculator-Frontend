@@ -5,6 +5,7 @@ const initialState = {
   value: 0,
   status: 'idle',
   result: null,
+  er: null,
   isAuthenticated: false,
   userInfo: null,
   isOtpVerified: false,
@@ -21,7 +22,7 @@ export const incrementAsync = createAsyncThunk(
 );
 export const calculateResultAsync = createAsyncThunk(
   'calculator/calculateResult',
-  async (info ) => {
+  async (info, { rejectWithValue } ) => {
     try{
       const response = await calculateResult(info);
     // The value we return becomes the `fulfilled` action payload
@@ -55,7 +56,7 @@ export const loginAsync = createAsyncThunk(
     // The value we return becomes the `fulfilled` action payload
     return response.data;
     }catch(error){
-      console.log(error);
+      // console.log(error);
       return rejectWithValue(error);
     }
   }
@@ -112,10 +113,14 @@ export const calculatorSlice = createSlice({
       .addCase(calculateResultAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.result = action.payload;
+        state.error = null;
+        // console.log(action.payload);
       })
       .addCase(calculateResultAsync.rejected, (state, action) => {
         state.status = 'idle';
-        state.error = action.payload;
+        state.error = action.payload.error;
+        state.result = null;
+        console.log(action.payload.error);
       })
       .addCase(signupAsync.pending, (state) => {
         state.status = 'loading';
@@ -124,10 +129,12 @@ export const calculatorSlice = createSlice({
         state.status = 'idle';
         state.isAuthenticated = true;
         state.userInfo = action.payload.data;
+        console.log(action.payload.data)
       })
       .addCase(signupAsync.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload;
+        state.isAuthenticated = false;
       })
       .addCase(loginAsync.pending, (state) => {
         state.status = 'loading';
@@ -140,7 +147,9 @@ export const calculatorSlice = createSlice({
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.status = 'idle';
+        state.isAuthenticated = false;
         state.error = action.payload;
+        console.log(state.isAuthenticated);
       })
       .addCase(sendNumberAsync.pending, (state) => {
         state.status = 'loading';
@@ -159,12 +168,13 @@ export const calculatorSlice = createSlice({
       })
       .addCase(verifyOtpAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.isOtpVerified = action.payload.success;
-        // console.log(action.payload);
+        state.isOtpVerified = true;
+        console.log(action.payload.success);
       })
       .addCase(verifyOtpAsync.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload;
+        state.isOtpVerified = false;
       })
       ;
   },

@@ -4,22 +4,23 @@ import {ipconfig} from "../../app/constants" ;
 export function calculateResult(info) {
   return new Promise(async (resolve, reject) => {
     try{
-    const response = await fetch(`http://${ipconfig}:3000/api/findCO2Emission`, {
+    const response = await fetch(`https://c02calculation-2.onrender.com/api/findCO2Emission`, {
       method: "POST",
       body: JSON.stringify(info),
       headers: { "content-type": "application/json" },
     });
-    const data = await response.json();
-    console.log(data);
-    resolve({ data });
     if (response.ok) {
       const data = await response.json();
+      // console.log(data);
       resolve({ data });
+      
     } else {
-      const error = await response.text();
+      const error = await response.json();
+      // console.log(error);
       reject(error);
     }
     }catch (error) {
+      // console.log(error);
       reject(error);
     }
   });
@@ -28,14 +29,15 @@ export function calculateResult(info) {
 export function login(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try{
-      console.log(ipconfig)
-    const response = await fetch(`http://${ipconfig}:3000/api/auth/login`, {
+      // console.log(ipconfig)
+    const response = await fetch(`https://c02calculation-2.onrender.com/api/auth/login`, {
       method: "POST",
       body: JSON.stringify(loginInfo),
       headers: { "content-type": "application/json" },
     });
     if (response.ok) {
     const data = await response.json();
+    console.log(data);
     resolve({ data });
   } else {
     const error = await response.text();
@@ -50,7 +52,7 @@ export function login(loginInfo) {
 export function signup(signupInfo) {
   return new Promise(async (resolve, reject) => {
     try{
-    const response = await fetch(`http://${ipconfig}:3000/api/auth/signup`, {
+    const response = await fetch(`https://c02calculation-2.onrender.com/api/auth/signup`, {
       method: "POST",
       body: JSON.stringify(signupInfo),
       headers: { "content-type": "application/json" },
@@ -72,7 +74,7 @@ export function signup(signupInfo) {
 export function verifyOtp(otp) {
   return new Promise(async (resolve, reject) => {
     try{
-    const response = await fetch(`http://${ipconfig}:3000/api/otp/verify`, {
+    const response = await fetch(`https://c02calculation-2.onrender.com/api/otp/verify`, {
       method: "POST",
       body: JSON.stringify(otp),
       headers: { "content-type": "application/json" },
@@ -93,7 +95,7 @@ export function verifyOtp(otp) {
 export function sendNumber(number) {
   return new Promise(async (resolve, reject) => {
     try{
-    const response = await fetch(`http://${ipconfig}:3000/api/otp/send`, {
+    const response = await fetch(`https://c02calculation-2.onrender.com/api/otp/send`, {
       method: "POST",
       body: JSON.stringify(number),
       headers: { "content-type": "application/json" },
