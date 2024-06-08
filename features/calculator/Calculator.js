@@ -12,8 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
   const [isChecked, setIsChecked] = useState(false);
-  // const [vehiclePart1, setVehiclePart1] = useState('');
-  // const [vehiclePart2, setVehiclePart2] = useState('');
+  const [vehiclePart1, setVehiclePart1] = useState('');
+  const [vehiclePart2, setVehiclePart2] = useState('');
   const navigation = useNavigation();   
   const dispatch = useDispatch(); 
         const handleCheckBox = () => {
@@ -71,7 +71,7 @@ const App = () => {
       <Formik
      initialValues={{ VechileNumber: '' , SourcePincode: '', DestinationPincode:'' , LoadedWeight:'' , VechileType: '' , MobilisationDistance:'', DeMobilisationDistance:'' }}
      onSubmit={async (values) => {
-      // values.VechileNumber = vehiclePart1 + vehiclePart2;
+      values.VechileNumber = vehiclePart1 + vehiclePart2;
       if (isChecked) {
         console.log(values);
         dispatch(calculateResultAsync(values));
@@ -87,29 +87,31 @@ const App = () => {
      {({ handleChange, handleBlur, handleSubmit, values }) => (
        <View className="pb-[50px]">
     
-        <Text className="text-xl ml-10 mb-1">Trip Details</Text>
-         <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+        <Text className="text-2xl mx-auto mb-1">Trip Details</Text>
+         {/* <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('VechileNumber')}
            onBlur={handleBlur('VechileNumber')}
            value={values.VechileNumber}
            placeholder='Vechile Number'
-         />
-         {/* <View className="flex-row items-center mx-[12%]">
+         /> */}
+         <Text className="text-xl  mb-1 ml-[12%] mt-6">Vehicle Number</Text>
+         <View className="flex-row items-center mx-[12%] w-[80%]">
          <TextInput
-              className=" my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+              className=" my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[50%]"
               onChangeText={(text) => setVehiclePart1(text)}
               onBlur={handleBlur('VechileNumber')}
               value={vehiclePart1}
-              placeholder='Part 1'
+              placeholder=''
             />
             <TextInput
-              className=" my-2 mx-[15%] rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+              className=" my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
               onChangeText={(text) => setVehiclePart2(text)}
               onBlur={handleBlur('VechileNumber')}
               value={vehiclePart2}
-              placeholder='Part 2'
+              placeholder=''
             />
-            </View> */}
+            </View>
+            <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('SourcePincode')}
            onBlur={handleBlur('SourcePincode')}
@@ -117,6 +119,7 @@ const App = () => {
            placeholder='Source Pincode'
            keyboardType="numeric"
          />
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Destination Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('DestinationPincode')}
            onBlur={handleBlur('DestinationPincode')}
@@ -124,6 +127,7 @@ const App = () => {
            placeholder='Destination Pincode'
            keyboardType="numeric"
          />
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Loaded Weight</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('LoadedWeight')}
            onBlur={handleBlur('LoadedWeight')}
@@ -133,7 +137,8 @@ const App = () => {
          />
        
         
-         <Text className="text-xl ml-10 mb-1">Additional Details</Text>
+         <Text className="text-xl font-[500] ml-10 mb-1 mt-4">Additional Details (optional)</Text>
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
            onChangeText={handleChange('MobilisationDistance')}
            onBlur={handleBlur('MobilisationDistance')}
@@ -141,6 +146,7 @@ const App = () => {
            placeholder='Mobilisation Distance (km)'
            keyboardType="numeric"
          />
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">DeMobilisation Distance</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
            onChangeText={handleChange('DeMobilisationDistance')}
            onBlur={handleBlur('DeMobilisationDistance')}
