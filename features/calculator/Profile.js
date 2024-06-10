@@ -111,8 +111,8 @@ const App = () => {
 
   return(
   <View className=" h-[100%] ">
-    <ImageBackground source={require("../../assets/images/image2.png")} resizeMode="cover" className="h-[100%] flex items-center">
-      <View className="w-[105%] h-[13%] bg-[#ABE87A] rounded-b-[100px] flex-row">
+    <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
+      <View className="w-[105%] h-[13%] bg-blue-900 rounded-b-[100px] flex-row">
         <Text className="mt-[40px] text-2xl ml-[170px]">Profile</Text>
         
       </View>
