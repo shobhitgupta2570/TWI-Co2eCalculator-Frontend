@@ -24,7 +24,7 @@ const App = () => {
   return(
   <View className=" h-[100%] ">
     <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
-      <View className="w-[105%] h-[13%] bg-blue-200 rounded-b-[100px] flex-row">
+      <View className="w-[105%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
         <Text className="mt-[40px] text-2xl ml-[120px]">Hello, Name</Text>
         <View className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
         <FontAwesome name="user-o" size={24} color="black" /></View>
