@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
@@ -9,6 +10,9 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { selectCalculator, selectCalculatorError, selectUserInfo } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 const App = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -20,6 +24,43 @@ const App = () => {
 
         const result = useSelector(selectCalculator);
         const resulterror = useSelector(selectCalculatorError);
+
+        const generatePDF = async () => {
+          try {
+            const htmlContent = `
+              <html>
+                <head>
+                  <title>Sample PDF</title>
+                </head>
+                <body>
+                  <h1>This is a sample PDF</h1>
+                  <p>Generated with react-native-html-to-pdf</p>
+                </body>
+              </html>
+            `;
+      
+            // Generate PDF
+            const { uri } = await RNHTMLtoPDF.convert({
+              html: htmlContent,
+              fileName: 'sample',
+              base64: true,
+            });
+      
+            // Save PDF to file system
+            const pdfUri = FileSystem.documentDirectory + 'sample.pdf';
+            await FileSystem.writeAsStringAsync(pdfUri, uri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+      
+            // Share the PDF file
+            await Sharing.shareAsync(pdfUri);
+      
+            Alert.alert('Success', 'PDF downloaded and shared!');
+          } catch (error) {
+            Alert.alert('Error', error.message);
+          }
+        };
+      
         
 
   return(
@@ -44,6 +85,11 @@ const App = () => {
         </View>
         <View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>
+
+        <TouchableOpacity onPress={generatePDF} className="h-11 w-[60%] mx-auto flex-row justify-center items-center bg-blue-400">
+          <Text className="font-semibold text-lg mr-4">Download Certificate</Text>
+          <AntDesign name="download" size={24} color="black" />
+          </TouchableOpacity>
          </ScrollView>
       </KeyboardAvoidingView>
     </ImageBackground>

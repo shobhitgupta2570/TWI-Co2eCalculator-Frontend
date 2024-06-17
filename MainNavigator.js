@@ -6,6 +6,7 @@ import Login from './features/calculator/Login';
 import Result from './features/calculator/Result';
 import Signup from './features/calculator/Signup';
 import Profile from './features/calculator/Profile';
+import Printer from './features/calculator/Printer';
 import Splash1 from './screens/Splash1';
 import Splash2 from './screens/Splash2';
 
@@ -37,8 +38,9 @@ export default () => {
       {/* {splash1Visible && <Splash1 />} */}
       {splash2Visible && <Splash2 />}
       {!splash1Visible && !splash2Visible && (
-   <Stack.Navigator initialRouteName='Signup' screenOptions={{ headerShown: false }}>
+   <Stack.Navigator initialRouteName='Printer' screenOptions={{ headerShown: false }}>
    <Stack.Screen name="Calculator" component={Calculator} />
+   <Stack.Screen name="Printer" component={Printer} />
    <Stack.Screen name="Result" component={Result} />
    <Stack.Screen name="Signup" component={Signup} />
    <Stack.Screen name="Profile" component={Profile} />
