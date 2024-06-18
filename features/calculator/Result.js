@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert} from 'react-native';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert, Platform, Button} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
@@ -10,11 +10,13 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { selectCalculator, selectCalculatorError, selectUserInfo } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 const App = () => {
+  const userBoy ="rocky";
+  
+  const [selectedPrinter, setSelectedPrinter] = React.useState();
   const [isChecked, setIsChecked] = useState(false);
   const userInfo = useSelector(selectUserInfo);
   const navigation = useNavigation();    
@@ -25,40 +27,39 @@ const App = () => {
         const result = useSelector(selectCalculator);
         const resulterror = useSelector(selectCalculatorError);
 
-        const generatePDF = async () => {
-          try {
-            const htmlContent = `
-              <html>
-                <head>
-                  <title>Sample PDF</title>
-                </head>
-                <body>
-                  <h1>This is a sample PDF</h1>
-                  <p>Generated with react-native-html-to-pdf</p>
-                </body>
-              </html>
-            `;
+       
+        const print = async () => {
+          // On iOS/android prints the given html. On web prints the HTML from the current page.
+          await Print.printAsync({
+            html,
+            printerUrl: selectedPrinter?.url, // iOS only
+          });
+        };
+        const html = `
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+          </head>
+          <body style="text-align: center;">
+            <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
+              Hello Expo! ${userBoy}
+            </h1>
+            <img
+              src="https://d30j33t1r58ioz.cloudfront.net/static/guides/sdk.png"
+              style="width: 90vw;" />
+          </body>
+        </html>
+        `;
+        const printToFile = async () => {
+          // On iOS/android prints the given html. On web prints the HTML from the current page.
+          const { uri } = await Print.printToFileAsync({ html });
+          console.log('File has been saved to:', uri);
+          await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+        };
       
-            // Generate PDF
-            const { uri } = await RNHTMLtoPDF.convert({
-              html: htmlContent,
-              fileName: 'sample',
-              base64: true,
-            });
-      
-            // Save PDF to file system
-            const pdfUri = FileSystem.documentDirectory + 'sample.pdf';
-            await FileSystem.writeAsStringAsync(pdfUri, uri, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-      
-            // Share the PDF file
-            await Sharing.shareAsync(pdfUri);
-      
-            Alert.alert('Success', 'PDF downloaded and shared!');
-          } catch (error) {
-            Alert.alert('Error', error.message);
-          }
+        const selectPrinter = async () => {
+          const printer = await Print.selectPrinterAsync(); // iOS only
+          setSelectedPrinter(printer);
         };
       
         
@@ -86,10 +87,23 @@ const App = () => {
         <View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>
 
-        <TouchableOpacity onPress={generatePDF} className="h-11 w-[60%] mx-auto flex-row justify-center items-center bg-blue-400">
-          <Text className="font-semibold text-lg mr-4">Download Certificate</Text>
-          <AntDesign name="download" size={24} color="black" />
-          </TouchableOpacity>
+     
+
+          <View style={styles.container}>
+      <Button title="Print" onPress={print} />
+      <View style={styles.spacer} />
+      <Button title="Print to PDF file" onPress={printToFile} />
+      {Platform.OS === 'ios' && (
+        <>
+          <View style={styles.spacer} />
+          <Button title="Select printer" onPress={selectPrinter} />
+          <View style={styles.spacer} />
+          {selectedPrinter ? (
+            <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
+          ) : undefined}
+        </>
+      )}
+    </View>
          </ScrollView>
       </KeyboardAvoidingView>
     </ImageBackground>
@@ -99,18 +113,16 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  image: {
-    flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    flexDirection: 'column',
+    padding: 8,
   },
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
+  spacer: {
+    height: 8,
+  },
+  printer: {
     textAlign: 'center',
-    backgroundColor: '#000000c0',
   },
 });
 
