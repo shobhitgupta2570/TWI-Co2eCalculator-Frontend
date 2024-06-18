@@ -36,19 +36,125 @@ const App = () => {
           });
         };
         const html = `
-        <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-          </head>
-          <body style="text-align: center;">
-            <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
-              Hello Expo! ${userBoy}
-            </h1>
-            <img
-              src="https://d30j33t1r58ioz.cloudfront.net/static/guides/sdk.png"
-              style="width: 90vw;" />
-          </body>
-        </html>
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of CO2 Emission</title>
+    <style>
+        @font-face {
+            font-family: 'Magnolia Script';
+            src: url('MagnoliaScript.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+
+        .certificate {
+            border: 10px solid #D4AF37;
+            padding: 30px;
+            width: 700px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            background: url('https://www.toptal.com/designers/subtlepatterns/patterns/symphony.png');
+        }
+
+        .certificate h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-family: 'Magnolia Script', cursive;
+            color: #D4AF37;
+        }
+
+        .certificate p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .certificate .highlight {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .top-section p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .signature-section {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .signature-line {
+            margin-top: 20px;
+            border-top: 1px solid #000;
+            width: 250px;
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .issuer-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="certificate">
+        <div class="top-section">
+            <p>Certificate Number: <span class="highlight" id="certificateNumber">${result && result.certificateNumber}</span></p>
+            <p>Date: <span class="highlight" id="date">${result.certificateIssueDate}</span></p>
+        </div>
+        <h1>Certificate of CO2 Emission</h1>
+        <p>This is to certify that the vehicle owned by</p>
+        <p class="highlight" id="vehicleOwner">${result.vehicleOwner}</p>
+        <p>with vehicle number</p>
+        <p class="highlight" id="vehicleNumber">${result.vehicleNumber}</p>
+        <p>has emitted</p>
+        <p><span class="highlight" id="co2Emission">${result.co2Emission}</span> kg of CO2</p>
+
+        <div class="signature-section">
+            <p>Authorized Signature</p>
+            <div class="signature-line" id="signature"></div>
+        </div>
+
+        <div class="issuer-section">
+            <p>Issued by:</p>
+            <p class="highlight">Transvue Solution India Pvt. Ltd.</p>
+        </div>
+    </div>
+
+    <script>
+        // You can set the values dynamically using JavaScript
+        document.getElementById("vehicleOwner").innerText = "John Doe";
+        document.getElementById("vehicleNumber").innerText = "ABC1234";
+        document.getElementById("co2Emission").innerText = "120.5";
+        document.getElementById("date").innerText = "June 18, 2024";
+        document.getElementById("certificateNumber").innerText = "CERT-2024-001";
+        document.getElementById("signature").innerText = "Jane Smith";  // Example signature name
+    </script>
+</body>
+
+</html>
         `;
         const printToFile = async () => {
           // On iOS/android prints the given html. On web prints the HTML from the current page.
@@ -81,7 +187,7 @@ const App = () => {
         <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
         <View className="bg-blue-100 mt-6 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           
-            <Text className="text-xl">{result && result}   kg</Text>
+            <Text className="text-xl">{result && result.co2Emission}   kg</Text>
            
         </View>
         <View className="items-center justify-center mt-11">
