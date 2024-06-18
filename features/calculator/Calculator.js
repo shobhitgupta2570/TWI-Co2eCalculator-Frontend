@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 import { calculateResultAsync } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
+
+
 const App = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [vehiclePart1, setVehiclePart1] = useState('');
@@ -84,7 +86,7 @@ const App = () => {
       // setFormValues(values);
     }}
    >
-     {({ handleChange, handleBlur, handleSubmit, values }) => (
+     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
        <View className="pb-[50px]">
     
         <Text className="text-2xl mx-auto mb-1">Trip Details</Text>
@@ -103,6 +105,9 @@ const App = () => {
               value={vehiclePart1}
               placeholder=''
             />
+            {(errors.vechilePart1 && touched.vechileNumber1) &&
+                  <Text style={{ color: 'red' }}>{errors.userName}</Text>
+                }
             <TextInput
               className=" my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
               onChangeText={(text) => setVehiclePart2(text)}

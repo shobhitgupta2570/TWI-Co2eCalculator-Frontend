@@ -122,15 +122,15 @@ const App = () => {
     <div class="certificate">
         <div class="top-section">
             <p>Certificate Number: <span class="highlight" id="certificateNumber">${result && result.certificateNumber}</span></p>
-            <p>Date: <span class="highlight" id="date">${result.certificateIssueDate}</span></p>
+            <p>Date: <span class="highlight" id="date">${result && result.certificateIssueDate}</span></p>
         </div>
         <h1>Certificate of CO2 Emission</h1>
         <p>This is to certify that the vehicle owned by</p>
-        <p class="highlight" id="vehicleOwner">${result.vehicleOwner}</p>
+        <p class="highlight" id="vehicleOwner">${result && result.vehicleOwner}</p>
         <p>with vehicle number</p>
-        <p class="highlight" id="vehicleNumber">${result.vehicleNumber}</p>
+        <p class="highlight" id="vehicleNumber">${result && result.vehicleNumber}</p>
         <p>has emitted</p>
-        <p><span class="highlight" id="co2Emission">${result.co2Emission}</span> kg of CO2</p>
+        <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> kg of CO2</p>
 
         <div class="signature-section">
             <p>Authorized Signature</p>
