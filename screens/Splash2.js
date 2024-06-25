@@ -7,15 +7,15 @@ export default function App() {
     <View className="flex-1 items-center bg-[#BED3ED] ">
       
         <Image
-          className="mt-[50px] ml-[30px]"
-          source={require("../assets/images/logo-removebg-preview 1.png")}
+          className="mt-[50px] ml-[25px]"
+          source={require("../assets/images/tranvue.jpg")}
           style={{ width: 201, height: 181 }}
         />
       
       <View className="flex items-center mt-[80px]">
         <Text className="text-white text-2xl w-[118px] h-[41px] ">About Us</Text>
         <Text className="text-white w-[301px] h-[194px] mt-[30px]">
-          Since 1956, Transport Wings (Cal) Pvt. Ltd. has been a market leader
+          Since 1956, Transvue Solution India Pvt. Ltd. has been a market leader
           in logistics.Moving cargo across India within various states has its
           own unforeseen challenges.Over 66 years of intensive, accurate,
           efficient, innovative, and dedicated operations have earned TWI a
