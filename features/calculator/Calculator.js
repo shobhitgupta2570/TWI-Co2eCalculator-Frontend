@@ -165,7 +165,7 @@ const App = () => {
                       className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
                       onChangeText={(text) => {
                         setVehiclePart2(text);
-                        if (text.length === 3 || text.length === 4) {
+                        if (text.length === 4) {
                           part3Ref.current.focus();
                         }
                       }}
