@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
@@ -16,8 +16,34 @@ const App = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [vehiclePart1, setVehiclePart1] = useState('');
   const [vehiclePart2, setVehiclePart2] = useState('');
+  const [vehiclePart3, setVehiclePart3] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAdditionalDetails, setShowAdditionalDetails] = useState(false); // State to toggle additional details
+  
+  const part1Ref = useRef(null);
+  const part2Ref = useRef(null);
+  const part3Ref = useRef(null);
   const navigation = useNavigation();   
   const dispatch = useDispatch(); 
+  const result = useSelector((state) => state.calculator.result); // Adjust according to your state structure
+  const resultStatus = useSelector((state) => state.calculator.status); // Assuming you have status in your state
+  const error = useSelector((state) => state.calculator.error);
+
+  useEffect(() => {
+    if (resultStatus === 'idle' && result) {
+      setIsLoading(false);
+      navigation.navigate('Result');
+    } else if (resultStatus === 'idle' && error) {
+      setIsLoading(false);
+      // Handle error if necessary
+      Alert.alert('Error', error); // Display error using Alert (or any other notification mechanism)
+    }
+  }, [resultStatus, result, error]);
+
+  const toggleAdditionalDetails = () => {
+    setShowAdditionalDetails(!showAdditionalDetails); // Toggle additional details visibility
+  };
+  
         const handleCheckBox = () => {
           setIsChecked(!isChecked);
         };
@@ -73,13 +99,16 @@ const App = () => {
       <Formik
      initialValues={{ VechileNumber: '' , SourcePincode: '', DestinationPincode:'' , LoadedWeight:'' , VechileType: '' , MobilisationDistance:'', DeMobilisationDistance:'' }}
      onSubmit={async (values) => {
-      values.VechileNumber = vehiclePart1 + vehiclePart2;
+      setIsLoading(true); // Start loading
+      values.VechileNumber = vehiclePart1 + vehiclePart2 + vehiclePart3;
       if (isChecked) {
         console.log(values);
         dispatch(calculateResultAsync(values));
-        navigation.navigate('Result');
+        // navigation.navigate('Result');
+        
       } else {
         // Do nothing, stay on the same page
+        setIsLoading(false);
       }
       // navigation.navigate('MarketplaceAfterRebid') 
       
@@ -97,7 +126,7 @@ const App = () => {
            placeholder='Vechile Number'
          /> */}
          <Text className="text-xl  mb-1 ml-[12%] mt-6">Vehicle Number</Text>
-         <View className="flex-row items-center mx-[12%] w-[80%]">
+         {/* <View className="flex-row items-center mx-[12%] w-[80%]">
          <TextInput
               className=" my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[50%]"
               onChangeText={(text) => setVehiclePart1(text)}
@@ -115,7 +144,46 @@ const App = () => {
               value={vehiclePart2}
               placeholder=''
             />
-            </View>
+            </View> */}
+            <View className="flex-row items-center mx-[12%] w-[80%]">
+                    <TextInput
+                      ref={part1Ref}
+                      className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
+                      onChangeText={(text) => {
+                        setVehiclePart1(text);
+                        if (text.length === 2) {
+                          part2Ref.current.focus();
+                        }
+                      }}
+                      onBlur={handleBlur('VechileNumber')}
+                      value={vehiclePart1}
+                      placeholder=''
+                      maxLength={2}
+                    />
+                    <TextInput
+                      ref={part2Ref}
+                      className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
+                      onChangeText={(text) => {
+                        setVehiclePart2(text);
+                        if (text.length === 3 || text.length === 4) {
+                          part3Ref.current.focus();
+                        }
+                      }}
+                      onBlur={handleBlur('VechileNumber')}
+                      value={vehiclePart2}
+                      placeholder=''
+                      maxLength={4}
+                    />
+                    <TextInput
+                      ref={part3Ref}
+                      className="my-2 pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%]"
+                      onChangeText={(text) => setVehiclePart3(text)}
+                      onBlur={handleBlur('VechileNumber')}
+                      value={vehiclePart3}
+                      placeholder=''
+                      maxLength={4}
+                    />
+                  </View>
             <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('SourcePincode')}
@@ -141,8 +209,34 @@ const App = () => {
            keyboardType="numeric"
          />
        
-        
-         <Text className="text-xl font-[500] ml-10 mb-1 mt-4">Additional Details (optional)</Text>
+       <TouchableOpacity onPress={toggleAdditionalDetails}>
+                    <Text className="text-xl font-[500] ml-10 mb-1 mt-4">
+                      Additional Details (optional) {showAdditionalDetails ? '▲' : '▼'}
+                    </Text>
+                  </TouchableOpacity>
+                  {showAdditionalDetails && (
+                    <>
+                      <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
+                      <TextInput
+                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        onChangeText={handleChange('MobilisationDistance')}
+                        onBlur={handleBlur('MobilisationDistance')}
+                        value={values.MobilisationDistance}
+                        placeholder='Mobilisation Distance (km)'
+                        keyboardType="numeric"
+                      />
+                      <Text className="text-xl  mb-1 ml-[12%] mt-2">DeMobilisation Distance</Text>
+                      <TextInput
+                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        onChangeText={handleChange('DeMobilisationDistance')}
+                        onBlur={handleBlur('DeMobilisationDistance')}
+                        value={values.DeMobilisationDistance}
+                        placeholder='DeMobilisation Distance (km)'
+                        keyboardType="numeric"
+                      />
+                    </>
+                  )}
+         {/* <Text className="text-xl font-[500] ml-10 mb-1 mt-4">Additional Details (optional)</Text>
          <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
            onChangeText={handleChange('MobilisationDistance')}
@@ -158,7 +252,7 @@ const App = () => {
            value={values.DeMobilisationDistance}
            placeholder='DeMobilisation Distance (km)'
            keyboardType="numeric"
-         />
+         /> */}
           
         <View className="mx-[65px]  flex-row justify-center">
          <CheckBox
@@ -171,7 +265,12 @@ const App = () => {
 
          <TouchableOpacity onPress={handleSubmit}>
          <View className="w-[150px] h-[50px] ml-[130px] rounded-2xl mt-5 bg-blue-900 flex items-center justify-center">
-         <Text className="text-white text-2xl">Submit</Text>
+         {isLoading ? (
+                        <ActivityIndicator size="large" color="#ffffff" />
+                      ) : (
+                        <Text className="text-white text-2xl">Submit</Text>
+                      )}
+         {/* <Text className="text-white text-2xl">Submit</Text> */}
          </View>
          </TouchableOpacity>
        </View>
