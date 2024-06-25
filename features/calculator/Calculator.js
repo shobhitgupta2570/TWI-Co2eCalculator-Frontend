@@ -184,6 +184,11 @@ const App = () => {
                       maxLength={4}
                     />
                   </View>
+                  <TouchableOpacity onPress={()=>{if(vehiclePart1.length+vehiclePart2.length+vehiclePart3.length==9){
+                    let num = vehiclePart2[vehiclePart2.length-1];
+                    setVehiclePart2(vehiclePart2.slice(0, -1));
+                    setVehiclePart3(num+vehiclePart3);
+                  }}}>
             <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('SourcePincode')}
@@ -192,6 +197,7 @@ const App = () => {
            placeholder='Source Pincode'
            keyboardType="numeric"
          />
+         </TouchableOpacity>
          <Text className="text-xl  mb-1 ml-[12%] mt-2">Destination Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('DestinationPincode')}
