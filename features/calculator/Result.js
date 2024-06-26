@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Image } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 // import CheckBox from 'react-native-check-box';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +25,9 @@ const App = () => {
         };
 
         const result = useSelector(selectCalculator);
+        // const result = {
+        //   co2Emission : 4545
+        // }
         const resulterror = useSelector(selectCalculatorError);
 
        
@@ -190,6 +193,31 @@ const App = () => {
             <Text className="text-xl">{result && result.co2Emission}   kg</Text>
            
         </View>
+        <View className="bg-blue-100 mt-6 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+          
+            <Text className="text-xl">{result && (result.co2Emission/1000).toFixed(1)}   unit</Text>
+           
+        </View>
+
+        <View className=" mt-10 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+          <View className="flex-row">
+            <Text className="text-xl">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
+            {/* <Image
+        source={{ uri: "../../assets/images/bg4.jpg" }}
+        style={styles.image}
+      /> */}
+           <Image
+          // className="mt-[50px] ml-[30px]"
+          source={require("../../assets/images/R.png")}
+          style={{ width: 22, height: 20 }}
+        />
+        <Text className="text-xl "> to compensate </Text>
+        </View>
+        <View>
+        <Text className="text-xl px-[5%] ml-[10%]">for your co2 Emission</Text>
+        </View>
+        </View>
+        
         <View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>
 
