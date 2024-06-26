@@ -38,8 +38,8 @@ const App = () => {
             printerUrl: selectedPrinter?.url, // iOS only
           });
         };
-        const html = `
-        <!DOCTYPE html>
+        const html = `      
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -76,6 +76,7 @@ const App = () => {
         .certificate h1 {
             font-size: 36px;
             margin-bottom: 20px;
+            font-style: italic;
             font-family: 'Magnolia Script', cursive;
             color: #D4AF37;
         }
@@ -101,6 +102,35 @@ const App = () => {
             font-size: 16px;
         }
 
+        .logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .logos-left,
+        .logos-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logos-left a img {
+            height: 20px;
+            margin-bottom: 5px;
+        }
+
+        .logos-right img {
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .info-section p {
+            text-align: left;
+            margin: 5px 0;
+            font-size: 7px;
+        }
+
         .signature-section {
             margin-top: 40px;
             text-align: right;
@@ -123,17 +153,30 @@ const App = () => {
 
 <body>
     <div class="certificate">
+        <div class="logos">
+            <div class="logos-left">
+                <a target="blank" href="https://dpiit.gov.in" class="logo nonsticky" data-page="home-page">
+                    <img src="/assets/DPIIT.svg" alt="DPIIT Logo">
+                </a>
+                <a href="https://www.startupindia.gov.in" class="logo nonsticky" data-page="home-page">
+                    <img src="../../assets/images/DPIIT.png" alt="Startup India Logo">
+                </a>
+            </div>
+            <div class="logos-right">
+                <img src="../../assets/images/DPIIT.png" alt="TSIL Logo">
+            </div>
+        </div>
         <div class="top-section">
-            <p>Certificate Number: <span class="highlight" id="certificateNumber">${result && result.certificateNumber}</span></p>
-            <p>Date: <span class="highlight" id="date">${result && result.certificateIssueDate}</span></p>
+            <p>Certificate Number: <span class="highlight" id="certificateNumber">[Certificate Number]</span></p>
+            <p>Date: <span class="highlight" id="date">[Date]</span></p>
         </div>
         <h1>Certificate of CO2 Emission</h1>
         <p>This is to certify that the vehicle owned by</p>
-        <p class="highlight" id="vehicleOwner">${result && result.vehicleOwner}</p>
+        <p class="highlight" id="vehicleOwner">[Vehicle Owner]</p>
         <p>with vehicle number</p>
-        <p class="highlight" id="vehicleNumber">${result && result.vehicleNumber}</p>
+        <p class="highlight" id="vehicleNumber">[Vehicle Number]</p>
         <p>has emitted</p>
-        <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> kg of CO2</p>
+        <p><span class="highlight" id="co2Emission">[CO2 Emission]</span> unit CO2</p>
 
         <div class="signature-section">
             <p>Authorized Signature</p>
@@ -143,6 +186,11 @@ const App = () => {
         <div class="issuer-section">
             <p>Issued by:</p>
             <p class="highlight">Transvue Solution India Pvt. Ltd.</p>
+        </div>
+
+        <div class="info-section">
+            <p>* The above result is based on user input.</p>
+            <p>* Additional details are based on US/UK research.</p>
         </div>
     </div>
 
