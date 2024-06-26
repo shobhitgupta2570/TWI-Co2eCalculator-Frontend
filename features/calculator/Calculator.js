@@ -3,7 +3,7 @@ import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, Tou
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Image } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 // import CheckBox from 'react-native-check-box';
 import { useNavigation } from '@react-navigation/native';
@@ -282,8 +282,18 @@ const App = () => {
        </View>
      )}
    </Formik>
+   <View className="flex-1 flex-row items-center justify-center mt-0">
+        <Text className="text-white">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+      </View>
    </ScrollView>
+   
       </KeyboardAvoidingView>
+      
     </ImageBackground>
   </View>
 )};

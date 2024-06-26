@@ -239,7 +239,17 @@ const App = () => {
       )}
     </View>
          </ScrollView>
+         <View className="flex-1 flex-row items-center justify-center mt-0">
+        <Text className="text-white">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+      </View>
       </KeyboardAvoidingView>
+
+      
     </ImageBackground>
   </View>
 )};

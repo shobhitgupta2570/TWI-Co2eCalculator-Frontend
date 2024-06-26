@@ -251,9 +251,21 @@ const App = () => {
    </Formik>
    <TouchableOpacity onPress={()=>navigation.navigate("Login")} className="flex-row mx-auto mb-11"><Text className="  text-xl font-[600]">Existing User </Text>
    <Text className="  text-xl text-blue-700 font-[800]"> Login</Text>
+   
    </TouchableOpacity>
+
+   
    </ScrollView>
+   
       </KeyboardAvoidingView>
+      <View className="flex-1 flex-row items-center justify-center mt-0">
+        <Text className="text-white">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+      </View>
     </ImageBackground>
   </View>
 )};
