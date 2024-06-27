@@ -106,7 +106,7 @@ const App = () => {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .logos-left,
@@ -121,7 +121,9 @@ const App = () => {
         }
 
         .logos-right img {
-            height: 50px;
+            height: 60px;
+            width: 60px;
+            margin-right: 5px;
             margin-bottom: 5px;
         }
 
@@ -156,31 +158,34 @@ const App = () => {
         <div class="logos">
             <div class="logos-left">
                 <a target="blank" href="https://dpiit.gov.in" class="logo nonsticky" data-page="home-page">
-                    <img src="/assets/DPIIT.svg" alt="DPIIT Logo">
+                    <img src="https://github.com/nitish1899/Image/blob/main/DPIIT-1719464112334.png?raw=true"
+                        alt="DPIIT Logo">
                 </a>
                 <a href="https://www.startupindia.gov.in" class="logo nonsticky" data-page="home-page">
-                    <img src="../../assets/images/DPIIT.png" alt="Startup India Logo">
+                    <img src="https://github.com/nitish1899/Image/blob/main/Logo1.png?raw=true"
+                        alt="Startup India Logo">
                 </a>
             </div>
             <div class="logos-right">
-                <img src="../../assets/images/DPIIT.png" alt="TSIL Logo">
+                <img src="	https://github.com/nitish1899/Image/blob/main/logo3-removebg-preview.png?raw=true
+                " alt="TSIL Logo">
             </div>
         </div>
         <div class="top-section">
-            <p>Certificate Number: <span class="highlight" id="certificateNumber">[Certificate Number]</span></p>
-            <p>Date: <span class="highlight" id="date">[Date]</span></p>
+            <p>Certificate Number: <span class="highlight" id="certificateNumber">${result && result.certificateNumber}</span></p>
+            <p>Date: <span class="highlight" id="date">${result && result.certificateIssueDate}</span></p>
         </div>
         <h1>Certificate of CO2 Emission</h1>
         <p>This is to certify that the vehicle owned by</p>
-        <p class="highlight" id="vehicleOwner">[Vehicle Owner]</p>
+        <p class="highlight" id="vehicleOwner">${result && result.vehicleOwner}</p>
         <p>with vehicle number</p>
-        <p class="highlight" id="vehicleNumber">[Vehicle Number]</p>
+        <p class="highlight" id="vehicleNumber">${result && result.vehicleNumber}</p>
         <p>has emitted</p>
-        <p><span class="highlight" id="co2Emission">[CO2 Emission]</span> unit CO2</p>
+        <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> unit CO2</p>
 
         <div class="signature-section">
             <p>Authorized Signature</p>
-            <div class="signature-line" id="signature"></div>
+            <div class="signature-line" id="signature">Jane Smith</div>
         </div>
 
         <div class="issuer-section">
@@ -193,16 +198,6 @@ const App = () => {
             <p>* Additional details are based on US/UK research.</p>
         </div>
     </div>
-
-    <script>
-        // You can set the values dynamically using JavaScript
-        document.getElementById("vehicleOwner").innerText = "John Doe";
-        document.getElementById("vehicleNumber").innerText = "ABC1234";
-        document.getElementById("co2Emission").innerText = "120.5";
-        document.getElementById("date").innerText = "June 18, 2024";
-        document.getElementById("certificateNumber").innerText = "CERT-2024-001";
-        document.getElementById("signature").innerText = "Jane Smith";  // Example signature name
-    </script>
 </body>
 
 </html>
