@@ -144,7 +144,7 @@ const App = () => {
    >
      {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, isValid,touched  }) => (
        <View className="pb-[50px]">
-         <Text className="text-3xl ml-[140px] font-semibold mb-11">Login</Text>
+         <Text className="text-3xl mx-auto font-semibold mb-11">Login</Text>
     
          <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[90px]"
            onChangeText={handleChange('mobileNumber')}
@@ -187,7 +187,7 @@ const App = () => {
        </View>
      )}
    </Formik>
-   <TouchableOpacity onPress={()=>navigation.navigate("Signup")} className="flex-row mx-auto"><Text className="  text-xl font-[600]">New User ?</Text>
+   <TouchableOpacity onPress={()=>navigation.navigate("Signup")} className="flex-row mx-auto"><Text className="  text-xl font-[600]">New User </Text>
    <Text className="  text-xl text-blue-700 font-[800]"> Signup</Text>
 
    
