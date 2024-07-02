@@ -7,7 +7,7 @@ import { CheckBox, Image } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 // import CheckBox from 'react-native-check-box';
 import { useNavigation } from '@react-navigation/native';
-import { calculateResultAsync } from './calculatorSlice';
+import { calculateResultAsync, selectUserInfo } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 
@@ -19,7 +19,51 @@ const App = () => {
   const [vehiclePart3, setVehiclePart3] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false); // State to toggle additional details
+  const userInfo = useSelector(selectUserInfo);
+
+  const [box1, setBox1] = useState('');
+  const [box2, setBox2] = useState('');
+  const [box3, setBox3] = useState('');
   
+  const box1Ref = useRef(null);
+  const box2Ref = useRef(null);
+  const box3Ref = useRef(null);
+
+  const handleBox1Change = (text) => {
+    if (text.length <= 2) {
+      setBox1(text);
+      if (text.length === 2) {
+        box2Ref.current.focus();
+      }
+    }
+  };
+
+  const handleBox2Change = (text) => {
+    if (text.length <= 4) {
+      setBox2(text);
+      if (text.length === 4) {
+        box3Ref.current.focus();
+      }
+    }
+  };
+
+  const handleBox3Change = (text) => {
+    if (text.length <= 4) {
+      setBox3(text);
+    }
+  };
+
+  const handleBox3Blur = () => {
+    const totalDigits = box1.length + box2.length + box3.length;
+    if (totalDigits === 9) {
+      const newBox2 = box2.slice(0, -1);
+      const newBox3 = box2.slice(-1) + box3;
+      setBox2(newBox2);
+      setBox3(newBox3);
+    }
+  };
+
+
   const part1Ref = useRef(null);
   const part2Ref = useRef(null);
   const part3Ref = useRef(null);
@@ -47,52 +91,20 @@ const App = () => {
         const handleCheckBox = () => {
           setIsChecked(!isChecked);
         };
-        const vehicleType=[
-          "LCV-PICKUP",
-          "TATA407/410",
-          "CANTER",
-          "LPT17FT",
-          "CBT CONTAINER",
-          "SCOOTER BODY",
-          "CAR CARRIER",
-          "LPT19FT",
-          "OBT",
-          "JCB",
-          "32FT CONTAINER SXL",
-          "JUMBOTRK",
-          "24FT CONTAINER CBT",
-          "TAURAS1518",
-          "OPEN TAURAS",
-          "32FT CONTAINER MXL",
-          "TAURAS 22FT",
-          "TAURAS 32FT",
-          "HBT TRAILER",
-          "SLBT TRAILER",
-          "LOW BED TRAILER",
-          "ULTRA LBT TRAILER",
-          "Trailer (ICD) 40FT",
-         " TAURAS 24FT",
-          "Trailer (ICD) 20FT",
-          "SIDE BODY TRAILER",
-          "3XL HBT TRAILER",
-          "3XL SLBT TRAILER",
-          "3XL LOW BED TRAILER",
-          "3XL ULTRA LBT TRAILER",
-          "4923 Prime Mover"
-          ]
+        
        
 
   return(
   <View className=" h-[100%]">
     <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
       <View className="w-[100%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
-        <Text className="mt-[40px] text-2xl ml-[120px]">Hello, Name</Text>
+        <Text className="mt-[40px] text-2xl ml-[120px]">Hello, {userInfo?userInfo.userName:"Name"}</Text>
         <TouchableOpacity onPress={(()=>navigation.navigate("Profile"))} className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
         <FontAwesome name="user-o" size={24} color="black" /></TouchableOpacity>
       </View>
-      <Text className="text-xl mt-2 px-6">Track your carbon footprint </Text>
+      {/* <Text className="text-xl mt-2 px-6">Track your carbon footprint </Text>
       <Text className="text-xl px-6">effortlessly with our CO2 emission</Text>
-      <Text className="text-xl px-6">calculator. Small steps, big impact!</Text>
+      <Text className="text-xl px-6">calculator. Small steps, big impact!</Text> */}
 
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
         <ScrollView> 
@@ -100,7 +112,7 @@ const App = () => {
      initialValues={{ VechileNumber: '' , SourcePincode: '', DestinationPincode:'' , LoadedWeight:'' , VechileType: '' , MobilisationDistance:'', DeMobilisationDistance:'' }}
      onSubmit={async (values) => {
       setIsLoading(true); // Start loading
-      values.VechileNumber = vehiclePart1 + vehiclePart2 + vehiclePart3;
+      values.VechileNumber = box1+box2+box3;
       if (isChecked) {
         console.log(values);
         dispatch(calculateResultAsync(values));
@@ -145,7 +157,41 @@ const App = () => {
               placeholder=''
             />
             </View> */}
-            <View className="flex-row items-center mx-[12%] w-[80%]">
+{/* <View style={styles.container}> */}
+<View className="flex-row items-center mx-[12%] w-[80%]">
+      <TextInput
+      className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
+        // style={styles.input}
+        value={box1}
+        onChangeText={handleBox1Change}
+        // keyboardType="numeric"
+        maxLength={2}
+        ref={box1Ref}
+      />
+      <TextInput
+      className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
+        // style={styles.input}
+        value={box2}
+        onChangeText={handleBox2Change}
+        // keyboardType="numeric"
+        maxLength={4}
+        ref={box2Ref}
+      />
+      <TextInput
+      className="my-2 pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%]"
+        // style={styles.input}
+        value={box3}
+        onChangeText={handleBox3Change}
+        onBlur={handleBox3Blur}
+        keyboardType="numeric"
+        maxLength={4}
+        ref={box3Ref}
+      />
+      
+    </View>
+
+      
+            {/* <View className="flex-row items-center mx-[12%] w-[80%]">
                     <TextInput
                       ref={part1Ref}
                       className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
@@ -183,12 +229,8 @@ const App = () => {
                       placeholder=''
                       maxLength={4}
                     />
-                  </View>
-                  <TouchableOpacity onPress={()=>{if(vehiclePart1.length+vehiclePart2.length+vehiclePart3.length==9){
-                    let num = vehiclePart2[vehiclePart2.length-1];
-                    setVehiclePart2(vehiclePart2.slice(0, -1));
-                    setVehiclePart3(num+vehiclePart3);
-                  }}}>
+                  </View> */}
+                  
             <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('SourcePincode')}
@@ -197,7 +239,7 @@ const App = () => {
            placeholder='Source Pincode'
            keyboardType="numeric"
          />
-         </TouchableOpacity>
+        
          <Text className="text-xl  mb-1 ml-[12%] mt-2">Destination Pincode</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
            onChangeText={handleChange('DestinationPincode')}
@@ -282,7 +324,11 @@ const App = () => {
        </View>
      )}
    </Formik>
-   <View className="flex-1 flex-row items-center justify-center mt-0">
+   
+   </ScrollView>
+   
+      </KeyboardAvoidingView>
+      <View className="flex-1 flex-row items-center justify-center mt-0">
         <Text className="text-white">Made in</Text>
         <Image
           className=" ml-2"
@@ -290,10 +336,6 @@ const App = () => {
           style={{ width: 40, height: 22 }}
         />
       </View>
-   </ScrollView>
-   
-      </KeyboardAvoidingView>
-      
     </ImageBackground>
   </View>
 )};
@@ -313,6 +355,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     backgroundColor: '#000000c0',
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  input: {
+    width: '30%',
+    borderWidth: 1,
+    padding: 8,
+    textAlign: 'center',
   },
 });
 
