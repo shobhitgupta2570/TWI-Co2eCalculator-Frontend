@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image} from 'react-native';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image, ActivityIndicator, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik, Form, Field } from 'formik';
 import { TextInput } from 'react-native';
@@ -47,6 +47,7 @@ const signUpSchema = yup.object().shape({
 
 const App = () => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const navigation = useNavigation();    
   const handleCheckBox = () => {
@@ -57,8 +58,10 @@ const App = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
  
   useEffect(() => {
+    setIsLoading(false);
     if (isAuthenticated) {
       // Navigate to the next page
+      setIsLoading(false);
       navigation.navigate('Calculator');
     }
   }, [isAuthenticated, navigation]);
@@ -126,6 +129,7 @@ const App = () => {
      initialValues={{ mobileNumber: null, pin: null  }}
      validationSchema={signUpSchema}
      onSubmit={(values)=>{
+      setIsLoading(true);
         if(isChecked) {
           console.log(isAuthenticated)
           console.log(values);
@@ -138,7 +142,7 @@ const App = () => {
             navigation.navigate('Calculator');
           }
      }else{
-
+      setIsLoading(false);
     }
     }}
    >
@@ -181,7 +185,12 @@ const App = () => {
 
          <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
          <View className="w-[150px] h-[50px] ml-[130px] rounded-2xl mt-5 bg-blue-900 flex items-center justify-center">
-         <Text className="text-white text-2xl">Submit</Text>
+         {isLoading ? (
+                        <ActivityIndicator size="large" color="#ffffff" />
+                      ) : (
+                        <Text className="text-white text-2xl">Submit</Text>
+                      )}
+         {/* <Text className="text-white text-2xl">Submit</Text> */}
          </View>
          </TouchableOpacity>
        </View>
