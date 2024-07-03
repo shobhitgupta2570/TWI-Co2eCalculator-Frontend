@@ -64,6 +64,16 @@ const App = () => {
   const isOtpVerified = useSelector(selectIsOtpVerified);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [modalVisible1, setModalVisible1] = useState(false);
+
+  const openModal1 = () => {
+    setModalVisible1(true);
+  };
+
+  const closeModal1 = () => {
+    setModalVisible1(false);
+  };
   useEffect(() => {
     if (isAuthenticated) {
       // Navigate to the next page
@@ -242,7 +252,31 @@ const App = () => {
         checked={isChecked}
         onPress={handleCheckBox}
       /> 
-      <TouchableOpacity><Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text></TouchableOpacity>
+      <TouchableOpacity onPress={openModal1}>
+        <Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text>
+        </TouchableOpacity>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={closeModal1}
+      >
+        <View className="" style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+          <View className="h-[600px] flex-column" style={{ backgroundColor: '#fff', padding: 20, borderRadius: 10, width: '80%' }}>
+            <Text className="text-2xl ml-[20px]">Terms & Conditions</Text>
+            <View className="border-black border-2 mt-[20px]">
+            <Text className=" mt-[20px] mx-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .</Text>
+            <Text className=" mt-[40px] mx-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .</Text>
+            <Text className=" mt-[40px] mx-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .</Text>
+            <Text className=" mt-[40px] mx-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .</Text>
+            <Text className=" mt-[40px] mx-auto mb-[20px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .</Text>
+            </View>
+            <View className="mt-11">
+            <Button  title="Read T&C" onPress={()=>{setModalVisible1(false)}} />
+            </View>
+          </View>
+        </View>
+      </Modal>
         </View>
 
          <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
