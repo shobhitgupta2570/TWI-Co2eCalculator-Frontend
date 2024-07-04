@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert, Platform, Button} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert, Platform, Button, Animated, Dimensions} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
@@ -12,14 +12,33 @@ import { selectCalculator, selectCalculatorError, selectUserInfo } from './calcu
 import { useSelector, useDispatch } from 'react-redux';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import LottieView from 'lottie-react-native';
+const { width } = Dimensions.get('window');
 
 const App = () => {
   const userBoy ="rocky";
-  
+  const [showText, setShowText] = useState(false);
   const [selectedPrinter, setSelectedPrinter] = React.useState();
   const [isChecked, setIsChecked] = useState(false);
   const userInfo = useSelector(selectUserInfo);
   const navigation = useNavigation();    
+
+  const animation = useRef(null);
+  const translateX = useRef(new Animated.Value(-200)).current; // Starting position off-screen
+
+  const startAnimation = () => {
+    Animated.timing(translateX, {
+      toValue: width,
+      duration: 5000, // Adjust the duration as needed
+      useNativeDriver: true,
+    }).start(() => {
+      setShowText(true); // Show text after animation completes
+    });
+  };
+
+  useEffect(() => {
+    startAnimation();
+  }, []);
         const handleCheckBox = () => {
           setIsChecked(!isChecked);
         };
@@ -224,10 +243,7 @@ const App = () => {
         <View className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
         <FontAwesome name="user-o" size={24} color="black" /></View>
       </View>
-      <Text className="text-xl mt-2 px-6">Track your carbon footprint </Text>
-      <Text className="text-xl px-6">effortlessly with our CO2 emission</Text>
-      <Text className="text-xl px-6">calculator. Small steps, big impact!</Text>
-
+     
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
         <ScrollView>
         <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
@@ -248,7 +264,7 @@ const App = () => {
            
         </View>
 
-        <View className=" mt-10 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+     { showText &&  <View className=" mt-10 w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">
             <Text className="text-xl">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
             {/* <Image
@@ -260,19 +276,37 @@ const App = () => {
           source={require("../../assets/images/R.png")}
           style={{ width: 22, height: 20 }}
         />
-        <Text className="text-xl "> to compensate </Text>
+        <Text className="text-xl "> to offset </Text>
         </View>
         <View>
         <Text className="text-xl px-[5%] ml-[10%]">for your co2 Emission</Text>
         </View>
-        </View>
+        </View>}
         
-        <View className="items-center justify-center mt-11">
-        <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>
+        {resulterror &&<View className="items-center justify-center mt-11">
+        <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-     
+           <View style={styles.animationContainer}>
+      <Animated.View style={{ transform: [{ translateX }] }}>
+        <LottieView
+          autoPlay
+          ref={animation}
+          style={styles.lottieView}
+          source={require('../../Truck1.json')}
+        />
+      </Animated.View>
+      <View style={styles.buttonContainer}>
+        {/* <Button
+          title="Restart Animation"
+          onPress={() => {
+            translateX.setValue(-200);
+            startAnimation();
+          }}
+        /> */}
+      </View>
+    </View>
 
-          <View style={styles.container}>
+      <View style={styles.container}>
       <Button title="Print" onPress={print} />
       <View style={styles.spacer} />
       <Button title="Print to PDF file" onPress={printToFile} />
@@ -288,7 +322,9 @@ const App = () => {
       )}
     </View>
          </ScrollView>
-         <View className="flex-1 flex-row items-center justify-center mt-0">
+     
+      </KeyboardAvoidingView>
+      <View className="flex-1 flex-row items-center justify-center mt-0">
         <Text className="text-white">Made in</Text>
         <Image
           className=" ml-2"
@@ -296,8 +332,6 @@ const App = () => {
           style={{ width: 40, height: 22 }}
         />
       </View>
-      </KeyboardAvoidingView>
-
       
     </ImageBackground>
   </View>
@@ -307,15 +341,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    // backgroundColor: '#ecf0f1',
     flexDirection: 'column',
-    padding: 8,
+    // padding: 8,
   },
   spacer: {
     height: 8,
   },
   printer: {
     textAlign: 'center',
+  },
+  animationContainer: {
+    // backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  lottieView: {
+    width: 200,
+    height: 180,
+  },
+  buttonContainer: {
+    // paddingTop: 20,
   },
 });
 
