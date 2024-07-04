@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAsync, selectIsAuthenticated, selectUserInfo } from './calculatorSlice';
+import { loginAsync, selectIsAuthenticated, selectUserInfo, selectUserExist } from './calculatorSlice';
 
 const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const signUpSchema = yup.object().shape({
@@ -56,6 +56,7 @@ const App = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userExist = useSelector(selectUserExist);
  
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -219,7 +220,9 @@ const App = () => {
         </View>
 
          <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
+         {/* {userExist? null : <Text className="text-red-600">User does not exist</Text>} */}
          <View className="w-[150px] h-[50px] ml-[130px] rounded-2xl mt-5 bg-blue-900 flex items-center justify-center">
+          
          {isLoading ? (
                         <ActivityIndicator size="large" color="#ffffff" />
                       ) : (

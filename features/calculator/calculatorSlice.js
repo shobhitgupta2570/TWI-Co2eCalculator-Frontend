@@ -9,7 +9,8 @@ const initialState = {
   isAuthenticated: false,
   userInfo: null,
   isOtpVerified: false,
-  isNumberRecieved : false
+  isNumberRecieved : false,
+  userExist: null
 };
 
 export const incrementAsync = createAsyncThunk(
@@ -150,6 +151,7 @@ export const calculatorSlice = createSlice({
         state.isAuthenticated = false;
         state.error = action.payload;
         console.log(state.isAuthenticated);
+        state.userExist = false;
       })
       .addCase(sendNumberAsync.pending, (state) => {
         state.status = 'loading';
@@ -189,5 +191,6 @@ export const selectIsNumberRecieved = (state)=>state.calculator.isNumberRecieved
 export const selectIsOtpVerified = (state)=>state.calculator.isOtpVerified;
 export const selectUserInfo = (state)=>state.calculator.userInfo;
 export const selectCalculatorError = (state)=>state.calculator.error;
+export const selectUserExist = (state)=>state.calculator.userExist;
 
 export default calculatorSlice.reducer;
