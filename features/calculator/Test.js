@@ -171,6 +171,7 @@ const App = () => {
             text-align: center;
         }
     </style>
+ 
 </head>
 
 <body>
@@ -204,8 +205,8 @@ const App = () => {
         <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> unit CO2</p>
 
         <div class="signature-section">
+            <img src="https://github.com/nitish1899/Image/blob/main/pmModiSigature.jpg?raw=true" alt="Signature"  height="50" width="200">
             <p>Authorized Signature</p>
-            <div class="signature-line" id="signature">Jane Smith</div>
         </div>
 
         <div class="issuer-section">
@@ -213,11 +214,26 @@ const App = () => {
             <p class="highlight">Transvue Solution India Pvt. Ltd.</p>
         </div>
 
-        <div class="info-section">
-            <p>* The above result is based on user input.</p>
-            <p>* Additional details are based on US/UK research.</p>
+        <div style="display: flex;">
+            <div class="info-section">
+                <p>* The above result is based on user input.</p>
+                <p>* Additional details are based on US/UK research.</p> 
+            </div>
+            <div class="time-section" style="margin-left: auto;" style="margin-right: 1px;">
+                <p>Time: <span class="highlight" id="time">${new Date().toLocaleTimeString()}</span></p>
+            </div>
         </div>
     </div>
+       <script>
+        window.onload = function() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('date').innerText = dateStr;
+            document.getElementById('time').innerText = timeStr;
+        };
+    </script>
 </body>
 
 </html>
@@ -288,7 +304,7 @@ const App = () => {
         {resulterror &&<View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-           <View style={styles.animationContainer}>
+        <View style={styles.container}>
       <Animated.View style={{ transform: [{ translateX }] }}>
         <LottieView
           autoPlay
@@ -297,15 +313,7 @@ const App = () => {
           source={require('../../Truck1.json')}
         />
       </Animated.View>
-      <View style={styles.buttonContainer}>
-        {/* <Button
-          title="Restart Animation"
-          onPress={() => {
-            translateX.setValue(-200);
-            startAnimation();
-          }}
-        /> */}
-      </View>
+      
     </View>
 
       {/* <View style={styles.container}> */}
@@ -346,13 +354,7 @@ const App = () => {
 )};
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // backgroundColor: '#ecf0f1',
-    // flexDirection: 'column',
-    // padding: 8,
-  },
+  
   spacer: {
     height: 8,
   },
@@ -361,16 +363,21 @@ const styles = StyleSheet.create({
   },
   animationContainer: {
     // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  container: {
+    backgroundColor: '#ecf0f1',
+    height: 180,
   },
   lottieView: {
     width: 200,
-    height: 100,
+    height: 180,
   },
   buttonContainer: {
-    // paddingTop: 20,
+    // Adjust or remove padding/margins as needed
+    paddingTop: 0,
   },
 });
 
