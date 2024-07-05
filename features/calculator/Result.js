@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert, Platform, Button, Animated, Dimensions} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
@@ -170,6 +171,7 @@ const App = () => {
             text-align: center;
         }
     </style>
+ 
 </head>
 
 <body>
@@ -203,8 +205,8 @@ const App = () => {
         <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> unit CO2</p>
 
         <div class="signature-section">
+            <img src="https://github.com/nitish1899/Image/blob/main/pmModiSigature.jpg?raw=true" alt="Signature"  height="50" width="200">
             <p>Authorized Signature</p>
-            <div class="signature-line" id="signature">Jane Smith</div>
         </div>
 
         <div class="issuer-section">
@@ -212,11 +214,26 @@ const App = () => {
             <p class="highlight">Transvue Solution India Pvt. Ltd.</p>
         </div>
 
-        <div class="info-section">
-            <p>* The above result is based on user input.</p>
-            <p>* Additional details are based on US/UK research.</p>
+        <div style="display: flex;">
+            <div class="info-section">
+                <p>* The above result is based on user input.</p>
+                <p>* Additional details are based on US/UK research.</p> 
+            </div>
+            <div class="time-section" style="margin-left: auto;" style="margin-right: 1px;">
+                <p>Time: <span class="highlight" id="time">${new Date().toLocaleTimeString()}</span></p>
+            </div>
         </div>
     </div>
+       <script>
+        window.onload = function() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('date').innerText = dateStr;
+            document.getElementById('time').innerText = timeStr;
+        };
+    </script>
 </body>
 
 </html>
@@ -241,13 +258,14 @@ const App = () => {
       <View className="w-[105%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
         <Text className="mt-[40px] text-2xl ml-[120px]">Hello, {userInfo?userInfo.userName:"Name"}</Text>
         <View className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
-        <FontAwesome name="user-o" size={24} color="black" /></View>
+        {/* <FontAwesome name="user-o" size={24} color="black" /> */}
+        <FontAwesome5 name="cloud-moon" size={24} color="black" /></View>
       </View>
      
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
         <ScrollView>
         <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
-        <View className=" mt-6 h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+        <View className=" mt-6 h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           
             <Text className="text-xl">{result && result.co2Emission}   kg</Text>
            
@@ -258,7 +276,7 @@ const App = () => {
           <Text className="text-xl">or</Text>
          
       </View>
-        <View className="h-[60px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+        <View className="h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           
             <Text className="text-xl">{result && (result.co2Emission/1000).toFixed(1)}   unit</Text>
            
@@ -306,7 +324,8 @@ const App = () => {
       </View>
     </View>
 
-      <View style={styles.container}>
+      {/* <View style={styles.container}> */}
+        <View className="w-[70%] mx-auto ">
       <Button title="Print" onPress={print} />
       <View style={styles.spacer} />
       <Button title="Print to PDF file" onPress={printToFile} />
@@ -329,6 +348,11 @@ const App = () => {
         <Image
           className=" ml-2"
           source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        <Image
+          className=" ml-4"
+          source={require("../../assets/images/lion2.png")}
           style={{ width: 40, height: 22 }}
         />
       </View>
