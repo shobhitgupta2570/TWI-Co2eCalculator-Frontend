@@ -282,29 +282,12 @@ const App = () => {
            
         </View>
 
-     { showText &&  <View className=" mt-10 w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-          <View className="flex-row">
-            <Text className="text-xl">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
-            {/* <Image
-        source={{ uri: "../../assets/images/bg4.jpg" }}
-        style={styles.image}
-      /> */}
-           <Image
-          // className="mt-[50px] ml-[30px]"
-          source={require("../../assets/images/R.png")}
-          style={{ width: 22, height: 20 }}
-        />
-        <Text className="text-xl "> to offset </Text>
-        </View>
-        <View>
-        <Text className="text-xl px-[5%] ml-[10%]">for your co2 Emission</Text>
-        </View>
-        </View>}
+     
         
         {resulterror &&<View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-           <View style={styles.animationContainer}>
+        <View style={styles.container} className="relative">
       <Animated.View style={{ transform: [{ translateX }] }}>
         <LottieView
           autoPlay
@@ -313,15 +296,24 @@ const App = () => {
           source={require('../../Truck1.json')}
         />
       </Animated.View>
-      <View style={styles.buttonContainer}>
-        {/* <Button
-          title="Restart Animation"
-          onPress={() => {
-            translateX.setValue(-200);
-            startAnimation();
-          }}
-        /> */}
-      </View>
+      { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+          <View className="flex-row">
+            <Text className="text-xl pr-2">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
+            {/* <Image
+        source={{ uri: "../../assets/images/bg4.jpg" }}
+        style={styles.image}
+      /> */}
+           <Image
+          // className="mt-[50px] ml-[30px]"
+          source={require("../../assets/images/mango2.jpg")}
+          style={{ width: 22, height: 20 }}
+        />
+        <Text className="text-xl pl-1"> to offset </Text>
+        </View>
+        <View>
+        <Text className="text-xl px-[5%] ml-[10%] mx-auto">for your co2 Emission</Text>
+        </View>
+        </View>}
     </View>
 
       {/* <View style={styles.container}> */}
@@ -362,13 +354,7 @@ const App = () => {
 )};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    // backgroundColor: '#ecf0f1',
-    flexDirection: 'column',
-    // padding: 8,
-  },
+  
   spacer: {
     height: 8,
   },
@@ -381,12 +367,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
+  container: {
+    // backgroundColor: '#ecf0f1',
+    height: 150,
+  },
   lottieView: {
     width: 200,
     height: 180,
   },
   buttonContainer: {
-    // paddingTop: 20,
+    // Adjust or remove padding/margins as needed
+    paddingTop: 0,
   },
 });
 

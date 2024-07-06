@@ -304,7 +304,7 @@ const App = () => {
         {resulterror &&<View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-        <View style={styles.container}>
+           <View style={styles.animationContainer}>
       <Animated.View style={{ transform: [{ translateX }] }}>
         <LottieView
           autoPlay
@@ -313,7 +313,15 @@ const App = () => {
           source={require('../../Truck1.json')}
         />
       </Animated.View>
-      
+      <View style={styles.buttonContainer}>
+        {/* <Button
+          title="Restart Animation"
+          onPress={() => {
+            translateX.setValue(-200);
+            startAnimation();
+          }}
+        /> */}
+      </View>
     </View>
 
       {/* <View style={styles.container}> */}
@@ -354,7 +362,13 @@ const App = () => {
 )};
 
 const styles = StyleSheet.create({
-  
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    // backgroundColor: '#ecf0f1',
+    flexDirection: 'column',
+    // padding: 8,
+  },
   spacer: {
     height: 8,
   },
@@ -367,18 +381,56 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  container: {
-    backgroundColor: '#ecf0f1',
-    height: 180,
-  },
   lottieView: {
     width: 200,
     height: 180,
   },
   buttonContainer: {
-    // Adjust or remove padding/margins as needed
-    paddingTop: 0,
+    // paddingTop: 20,
   },
 });
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
