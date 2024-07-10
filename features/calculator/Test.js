@@ -213,12 +213,12 @@ const App = () => {
       />
       
     </View>
-           <View className="flex-cols-3 w-[100%] bg-red-400">     
-           <View style={styles.container}>
-      <Text style={styles.verticalText}>Vertical Text</Text>
-    </View>
-            {/* <View className="w-[10%] bg-blue-200"><Text className=" text-lg">
-            Vertical Text</Text></View> */}
+           {/* <View className="flex-cols-3 w-[100%] bg-red-400">     
+           
+            <View className="w-[10%] bg-blue-200">
+              <Text className=" text-lg">
+            Vertical Text</Text>
+            </View>
             <View>
             <Text className="text-xl  mb-1 text-center mt-2">Source Pincode</Text>
            <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center "
@@ -249,7 +249,53 @@ const App = () => {
 
          <View className="w-[10%] bg-blue-200"></View>
 
-         </View>  
+         </View>   */}
+         <View className="flex-cols-3 w-[100%] bg-red-400 flex flex-row">
+  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
+    <Text className="text-lg transform -rotate-90">
+      Vertical Text
+    </Text>
+  </View>
+
+  <View className="flex-1">
+    <Text className="text-xl mb-1 text-center mt-2">Source Pincode</Text>
+    <TextInput
+      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+      onChangeText={handleChange('SourcePincode')}
+      onBlur={handleBlur('SourcePincode')}
+      value={values.SourcePincode}
+      placeholder="Source Pincode"
+      keyboardType="numeric"
+    />
+    
+    <Text className="text-xl mb-1 text-center mt-2">Destination Pincode</Text>
+    <TextInput
+      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+      onChangeText={handleChange('DestinationPincode')}
+      onBlur={handleBlur('DestinationPincode')}
+      value={values.DestinationPincode}
+      placeholder="Destination Pincode"
+      keyboardType="numeric"
+    />
+    
+    <Text className="text-xl mb-1 text-center mt-2">Loaded Weight</Text>
+    <TextInput
+      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+      onChangeText={handleChange('LoadedWeight')}
+      onBlur={handleBlur('LoadedWeight')}
+      value={values.LoadedWeight}
+      placeholder="Loaded Weight"
+      keyboardType="numeric"
+    />
+  </View>
+
+  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
+    <Text className="text-lg transform -rotate-90">
+      Vertical Text
+    </Text>
+  </View>
+</View>
+
        
        <TouchableOpacity onPress={toggleAdditionalDetails}>
                     <Text className="text-xl font-[500] ml-10 mb-1 mt-4">
