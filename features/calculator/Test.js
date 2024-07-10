@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert, Platform, Button, Animated, Dimensions} from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
@@ -9,339 +7,320 @@ import { CheckBox, Image } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 // import CheckBox from 'react-native-check-box';
 import { useNavigation } from '@react-navigation/native';
-import { selectCalculator, selectCalculatorError, selectUserInfo } from './calculatorSlice';
+import { calculateResultAsync, selectUserInfo } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
-import LottieView from 'lottie-react-native';
-const { width } = Dimensions.get('window');
+import '../styles.css'; 
+
 
 const App = () => {
-  const userBoy ="rocky";
-  const [showText, setShowText] = useState(false);
-  const [selectedPrinter, setSelectedPrinter] = React.useState();
   const [isChecked, setIsChecked] = useState(false);
+  const [vehiclePart1, setVehiclePart1] = useState('');
+  const [vehiclePart2, setVehiclePart2] = useState('');
+  const [vehiclePart3, setVehiclePart3] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAdditionalDetails, setShowAdditionalDetails] = useState(false); // State to toggle additional details
   const userInfo = useSelector(selectUserInfo);
-  const navigation = useNavigation();    
 
-  const animation = useRef(null);
-  const translateX = useRef(new Animated.Value(-200)).current; // Starting position off-screen
+  const [box1, setBox1] = useState('');
+  const [box2, setBox2] = useState('');
+  const [box3, setBox3] = useState('');
+  
+  const box1Ref = useRef(null);
+  const box2Ref = useRef(null);
+  const box3Ref = useRef(null);
 
-  const startAnimation = () => {
-    Animated.timing(translateX, {
-      toValue: width,
-      duration: 5000, // Adjust the duration as needed
-      useNativeDriver: true,
-    }).start(() => {
-      setShowText(true); // Show text after animation completes
-    });
+  const handleBox1Change = (text) => {
+    if (text.length <= 2) {
+      setBox1(text);
+      if (text.length === 2) {
+        box2Ref.current.focus();
+      }
+    }
   };
 
+  const handleBox2Change = (text) => {
+    if (text.length <= 6) {
+      setBox2(text);
+      if (text.length === 6) {
+        box3Ref.current.focus();
+      }
+    }
+  };
+
+  const handleBox3Change = (text) => {
+    if (text.length <= 4) {
+      setBox3(text);
+    }
+  };
+
+  const handleBox3Blur = () => {
+    const totalDigits = box2.length + box3.length;
+    if (totalDigits === 9) {
+      const newBox2 = box2.slice(0, -1);
+      const newBox3 = box2.slice(-1) + box3;
+      setBox2(newBox2);
+      setBox3(newBox3);
+    }
+  };
+
+
+  const part1Ref = useRef(null);
+  const part2Ref = useRef(null);
+  const part3Ref = useRef(null);
+  const navigation = useNavigation();   
+  const dispatch = useDispatch(); 
+  const result = useSelector((state) => state.calculator.result); // Adjust according to your state structure
+  const resultStatus = useSelector((state) => state.calculator.status); // Assuming you have status in your state
+  const error = useSelector((state) => state.calculator.error);
+
   useEffect(() => {
-    startAnimation();
-  }, []);
+    if (resultStatus === 'idle' && result) {
+      setIsLoading(false);
+      navigation.navigate('Result');
+    } else if (resultStatus === 'idle' && error) {
+      setIsLoading(false);
+      // Handle error if necessary
+      Alert.alert('Error', error); // Display error using Alert (or any other notification mechanism)
+    }
+  }, [resultStatus, result, error]);
+
+  const toggleAdditionalDetails = () => {
+    setShowAdditionalDetails(!showAdditionalDetails); // Toggle additional details visibility
+  };
+  
         const handleCheckBox = () => {
           setIsChecked(!isChecked);
         };
-
-        const result = useSelector(selectCalculator);
-        // const result = {
-        //   co2Emission : 4545
-        // }
-        const resulterror = useSelector(selectCalculatorError);
-
-       
-        const print = async () => {
-          // On iOS/android prints the given html. On web prints the HTML from the current page.
-          await Print.printAsync({
-            html,
-            printerUrl: selectedPrinter?.url, // iOS only
-          });
-        };
-        const html = `      
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate of CO2 Emission</title>
-    <style>
-        @font-face {
-            font-family: 'Magnolia Script';
-            src: url('MagnoliaScript.ttf') format('truetype');
-        }
-
-        body {
-            font-family: 'Playfair Display', serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f8f9fa;
-            margin: 0;
-        }
-
-        .certificate {
-            border: 10px solid #D4AF37;
-            padding: 30px;
-            width: 700px;
-            text-align: center;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            position: relative;
-            background: url('https://www.toptal.com/designers/subtlepatterns/patterns/symphony.png');
-        }
-
-        .certificate h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-style: italic;
-            font-family: 'Magnolia Script', cursive;
-            color: #D4AF37;
-        }
-
-        .certificate p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .certificate .highlight {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .top-section {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .top-section p {
-            margin: 0;
-            font-size: 16px;
-        }
-
-        .logos {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .logos-left,
-        .logos-right {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logos-left a img {
-            height: 20px;
-            margin-bottom: 5px;
-        }
-
-        .logos-right img {
-            height: 60px;
-            width: 60px;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-
-        .info-section p {
-            text-align: left;
-            margin: 5px 0;
-            font-size: 7px;
-        }
-
-        .signature-section {
-            margin-top: 40px;
-            text-align: right;
-        }
-
-        .signature-line {
-            margin-top: 20px;
-            border-top: 1px solid #000;
-            width: 250px;
-            margin-left: auto;
-            margin-right: 0;
-        }
-
-        .issuer-section {
-            margin-top: 40px;
-            text-align: center;
-        }
-    </style>
- 
-</head>
-
-<body>
-    <div class="certificate">
-        <div class="logos">
-            <div class="logos-left">
-                <a target="blank" href="https://dpiit.gov.in" class="logo nonsticky" data-page="home-page">
-                    <img src="https://github.com/nitish1899/Image/blob/main/DPIIT-1719464112334.png?raw=true"
-                        alt="DPIIT Logo">
-                </a>
-                <a href="https://www.startupindia.gov.in" class="logo nonsticky" data-page="home-page">
-                    <img src="https://github.com/nitish1899/Image/blob/main/Logo1.png?raw=true"
-                        alt="Startup India Logo">
-                </a>
-            </div>
-            <div class="logos-right">
-                <img src="	https://github.com/nitish1899/Image/blob/main/logo3-removebg-preview.png?raw=true
-                " alt="TSIL Logo">
-            </div>
-        </div>
-        <div class="top-section">
-            <p>Certificate Number: <span class="highlight" id="certificateNumber">${result && result.certificateNumber}</span></p>
-            <p>Date: <span class="highlight" id="date">${result && result.certificateIssueDate}</span></p>
-        </div>
-        <h1>Certificate of CO2 Emission</h1>
-        <p>This is to certify that the vehicle owned by</p>
-        <p class="highlight" id="vehicleOwner">${result && result.vehicleOwner}</p>
-        <p>with vehicle number</p>
-        <p class="highlight" id="vehicleNumber">${result && result.vehicleNumber}</p>
-        <p>has emitted</p>
-        <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> unit CO2</p>
-
-        <div class="signature-section">
-            <img src="https://github.com/nitish1899/Image/blob/main/pmModiSigature.jpg?raw=true" alt="Signature"  height="50" width="200">
-            <p>Authorized Signature</p>
-        </div>
-
-        <div class="issuer-section">
-            <p>Issued by:</p>
-            <p class="highlight">Transvue Solution India Pvt. Ltd.</p>
-        </div>
-
-        <div style="display: flex;">
-            <div class="info-section">
-                <p>* The above result is based on user input.</p>
-                <p>* Additional details are based on US/UK research.</p> 
-            </div>
-            <div class="time-section" style="margin-left: auto;" style="margin-right: 1px;">
-                <p>Time: <span class="highlight" id="time">${new Date().toLocaleTimeString()}</span></p>
-            </div>
-        </div>
-    </div>
-       <script>
-        window.onload = function() {
-            const now = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('en-US', options);
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            document.getElementById('date').innerText = dateStr;
-            document.getElementById('time').innerText = timeStr;
-        };
-    </script>
-</body>
-
-</html>
-        `;
-        const printToFile = async () => {
-          // On iOS/android prints the given html. On web prints the HTML from the current page.
-          const { uri } = await Print.printToFileAsync({ html });
-          console.log('File has been saved to:', uri);
-          await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-        };
-      
-        const selectPrinter = async () => {
-          const printer = await Print.selectPrinterAsync(); // iOS only
-          setSelectedPrinter(printer);
-        };
-      
         
+       
 
   return(
-  <View className=" h-[100%] ">
+  <View className=" h-[100%]">
     <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
-      <View className="w-[105%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
+      <View className="w-[100%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
         <Text className="mt-[40px] text-2xl ml-[120px]">Hello, {userInfo?userInfo.userName:"Name"}</Text>
-        <View className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
-        {/* <FontAwesome name="user-o" size={24} color="black" /> */}
-        <FontAwesome5 name="cloud-moon" size={24} color="black" /></View>
+        <TouchableOpacity onPress={(()=>navigation.navigate("Profile"))} className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
+        <FontAwesome name="user-o" size={24} color="black" /></TouchableOpacity>
       </View>
-     
+      {/* <Text className="text-xl mt-2 px-6">Track your carbon footprint </Text>
+      <Text className="text-xl px-6">effortlessly with our CO2 emission</Text>
+      <Text className="text-xl px-6">calculator. Small steps, big impact!</Text> */}
+
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
-        <ScrollView>
-        <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
-        <View className=" mt-6 h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-          
-            <Text className="text-xl">{result && result.co2Emission}   kg</Text>
-           
-        </View>
-
-        <View className="h-[30px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-          
-          <Text className="text-xl">or</Text>
-         
-      </View>
-        <View className="h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-          
-            <Text className="text-xl">{result && (result.co2Emission/1000).toFixed(1)}   unit</Text>
-           
-        </View>
-
-     { showText &&  <View className=" mt-10 w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
-          <View className="flex-row">
-            <Text className="text-xl">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
-            {/* <Image
-        source={{ uri: "../../assets/images/bg4.jpg" }}
-        style={styles.image}
-      /> */}
-           <Image
-          // className="mt-[50px] ml-[30px]"
-          source={require("../../assets/images/R.png")}
-          style={{ width: 22, height: 20 }}
-        />
-        <Text className="text-xl "> to offset </Text>
-        </View>
-        <View>
-        <Text className="text-xl px-[5%] ml-[10%]">for your co2 Emission</Text>
-        </View>
-        </View>}
+        <ScrollView> 
+      <Formik
+     initialValues={{ VechileNumber: '' , SourcePincode: '', DestinationPincode:'' , LoadedWeight:'' , VechileType: '' , MobilisationDistance:'', DeMobilisationDistance:'' }}
+     onSubmit={async (values) => {
+      setIsLoading(true); // Start loading
+      values.VechileNumber = box2+box3;
+      if (isChecked) {
+        console.log(values);
+        dispatch(calculateResultAsync(values));
+        // navigation.navigate('Result');
         
-        {resulterror &&<View className="items-center justify-center mt-11">
-        <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
+      } else {
+        // Do nothing, stay on the same page
+        setIsLoading(false);
+      }
+      // navigation.navigate('MarketplaceAfterRebid') 
+      
+      // setFormValues(values);
+    }}
+   >
+     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+       <View className="pb-[50px]">
+    
+        <Text className="text-2xl mx-auto mb-1">Trip Details</Text>
+         {/* <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[70px]"
+           onChangeText={handleChange('VechileNumber')}
+           onBlur={handleBlur('VechileNumber')}
+           value={values.VechileNumber}
+           placeholder='Vechile Number'
+         /> */}
+         <Text className="text-xl  mb-1 text-center mt-6">Vehicle Number</Text>
+         {/* <View className="flex-row items-center mx-[12%] w-[80%]">
+         <TextInput
+              className=" my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[50%]"
+              onChangeText={(text) => setVehiclePart1(text)}
+              onBlur={handleBlur('VechileNumber')}
+              value={vehiclePart1}
+              placeholder=''
+            />
+            {(errors.vechilePart1 && touched.vechileNumber1) &&
+                  <Text style={{ color: 'red' }}>{errors.userName}</Text>
+                }
+            <TextInput
+              className=" my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
+              onChangeText={(text) => setVehiclePart2(text)}
+              onBlur={handleBlur('VechileNumber')}
+              value={vehiclePart2}
+              placeholder=''
+            />
+            </View> */}
+{/* <View style={styles.container}> */}
+{/* <View className="flex-row items-center mx-[12%] w-[80%]">
+      <TextInput
+      className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
+        // style={styles.input}
+        value={box1}
+        onChangeText={handleBox1Change}
+        // keyboardType="numeric"
+        maxLength={2}
+        ref={box1Ref}
+      />
+      <TextInput
+      className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
+        // style={styles.input}
+        value={box2}
+        onChangeText={handleBox2Change}
+        // keyboardType="numeric"
+        maxLength={4}
+        ref={box2Ref}
+      />
+      <TextInput
+      className="my-2 pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%]"
+        // style={styles.input}
+        value={box3}
+        onChangeText={handleBox3Change}
+        onBlur={handleBox3Blur}
+        keyboardType="numeric"
+        maxLength={4}
+        ref={box3Ref}
+      />
+      
+    </View> */}
 
-           <View style={styles.animationContainer}>
-      <Animated.View style={{ transform: [{ translateX }] }}>
-        <LottieView
-          autoPlay
-          ref={animation}
-          style={styles.lottieView}
-          source={require('../../Truck1.json')}
-        />
-      </Animated.View>
-      <View style={styles.buttonContainer}>
-        {/* <Button
-          title="Restart Animation"
-          onPress={() => {
-            translateX.setValue(-200);
-            startAnimation();
-          }}
-        /> */}
-      </View>
-    </View>
-
-      {/* <View style={styles.container}> */}
-        <View className="w-[70%] mx-auto ">
-      <Button title="Print" onPress={print} />
-      <View style={styles.spacer} />
-      <Button title="Print to PDF file" onPress={printToFile} />
-      {Platform.OS === 'ios' && (
-        <>
-          <View style={styles.spacer} />
-          <Button title="Select printer" onPress={selectPrinter} />
-          <View style={styles.spacer} />
-          {selectedPrinter ? (
-            <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
-          ) : undefined}
-        </>
-      )}
-    </View>
-         </ScrollView>
+<View className="flex-row items-center justify-center gap-4 ">
      
+      <TextInput
+      className="my-2 px-[8%]  text-center rounded-xl border-2 text-black-200 text-lg font-semibold "
+        // style={styles.input}
+        value={box2}
+        onChangeText={handleBox2Change}
+        // keyboardType="numeric"
+        maxLength={6}
+        ref={box2Ref}
+      />
+      <TextInput
+      className="my-2 px-[6%] text-center rounded-xl border-2 text-black-200 text-lg font-semibold"
+        // style={styles.input}
+        value={box3}
+        onChangeText={handleBox3Change}
+        onBlur={handleBox3Blur}
+        keyboardType="numeric"
+        maxLength={4}
+        ref={box3Ref}
+      />
+      
+    </View>
+           <View className="flex-cols-3 w-[100%] bg-red-400">     
+           <View style={styles.container}>
+      <Text style={styles.verticalText}>Vertical Text</Text>
+    </View>
+            {/* <View className="w-[10%] bg-blue-200"><Text className=" text-lg">
+            Vertical Text</Text></View> */}
+            <View>
+            <Text className="text-xl  mb-1 text-center mt-2">Source Pincode</Text>
+           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center "
+           onChangeText={handleChange('SourcePincode')}
+           onBlur={handleBlur('SourcePincode')}
+           value={values.SourcePincode}
+           placeholder='Source Pincode'
+           keyboardType="numeric"
+         />
+        
+         <Text className="text-xl  mb-1 text-center mt-2">Destination Pincode</Text>
+           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+           onChangeText={handleChange('DestinationPincode')}
+           onBlur={handleBlur('DestinationPincode')}
+           value={values.DestinationPincode}
+           placeholder='Destination Pincode'
+           keyboardType="numeric"
+         />
+         <Text className="text-xl  mb-1 text-center mt-2">Loaded Weight</Text>
+           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+           onChangeText={handleChange('LoadedWeight')}
+           onBlur={handleBlur('LoadedWeight')}
+           value={values.LoadedWeight}
+           placeholder='Loaded Weight'
+           keyboardType="numeric"
+         />
+         </View>
+
+         <View className="w-[10%] bg-blue-200"></View>
+
+         </View>  
+       
+       <TouchableOpacity onPress={toggleAdditionalDetails}>
+                    <Text className="text-xl font-[500] ml-10 mb-1 mt-4">
+                      Additional Details (optional) {showAdditionalDetails ? '▲' : '▼'}
+                    </Text>
+                  </TouchableOpacity>
+                  {showAdditionalDetails && (
+                    <>
+                      <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
+                      <TextInput
+                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        onChangeText={handleChange('MobilisationDistance')}
+                        onBlur={handleBlur('MobilisationDistance')}
+                        value={values.MobilisationDistance}
+                        placeholder='Mobilisation Distance (km)'
+                        keyboardType="numeric"
+                      />
+                      <Text className="text-xl  mb-1 ml-[12%] mt-2">DeMobilisation Distance</Text>
+                      <TextInput
+                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        onChangeText={handleChange('DeMobilisationDistance')}
+                        onBlur={handleBlur('DeMobilisationDistance')}
+                        value={values.DeMobilisationDistance}
+                        placeholder='DeMobilisation Distance (km)'
+                        keyboardType="numeric"
+                      />
+                    </>
+                  )}
+         {/* <Text className="text-xl font-[500] ml-10 mb-1 mt-4">Additional Details (optional)</Text>
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+           onChangeText={handleChange('MobilisationDistance')}
+           onBlur={handleBlur('MobilisationDistance')}
+           value={values.MobilisationDistance}
+           placeholder='Mobilisation Distance (km)'
+           keyboardType="numeric"
+         />
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">DeMobilisation Distance</Text>
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+           onChangeText={handleChange('DeMobilisationDistance')}
+           onBlur={handleBlur('DeMobilisationDistance')}
+           value={values.DeMobilisationDistance}
+           placeholder='DeMobilisation Distance (km)'
+           keyboardType="numeric"
+         /> */}
+          
+        <View className="mx-[65px]  flex-row justify-center">
+         <CheckBox
+        title='By checking this box, you agree to our terms and conditions'
+        checked={isChecked}
+        onPress={handleCheckBox}
+      /> 
+      <TouchableOpacity><Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text></TouchableOpacity>
+        </View>
+
+         <TouchableOpacity onPress={handleSubmit}>
+         <View className="w-[150px] h-[50px] ml-[130px] rounded-2xl mt-5 bg-blue-900 flex items-center justify-center">
+         {isLoading ? (
+                        <ActivityIndicator size="large" color="#ffffff" />
+                      ) : (
+                        <Text className="text-white text-2xl">Submit</Text>
+                      )}
+         {/* <Text className="text-white text-2xl">Submit</Text> */}
+         </View>
+         </TouchableOpacity>
+       </View>
+     )}
+   </Formik>
+   
+   </ScrollView>
+   
       </KeyboardAvoidingView>
       <View className="flex-1 flex-row items-center justify-center mt-0">
         <Text className="text-white">Made in</Text>
@@ -350,13 +329,7 @@ const App = () => {
           source={require("../../assets/images/image 10.png")}
           style={{ width: 40, height: 22 }}
         />
-        <Image
-          className=" ml-4"
-          source={require("../../assets/images/lion2.png")}
-          style={{ width: 40, height: 22 }}
-        />
       </View>
-      
     </ImageBackground>
   </View>
 )};
@@ -364,40 +337,42 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
     justifyContent: 'center',
-    // backgroundColor: '#ecf0f1',
-    flexDirection: 'column',
-    // padding: 8,
   },
-  spacer: {
-    height: 8,
+  text: {
+    color: 'white',
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#000000c0',
   },
-  printer: {
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  input: {
+    width: '30%',
+    borderWidth: 1,
+    padding: 8,
     textAlign: 'center',
   },
-  animationContainer: {
-    // backgroundColor: '#fff',
-    alignItems: 'center',
+  container: {
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
   },
-  lottieView: {
-    width: 200,
-    height: 180,
-  },
-  buttonContainer: {
-    // paddingTop: 20,
+  verticalText: {
+    transform: [{ rotate: '90deg' }],
+    fontSize: 20,
   },
 });
 
 export default App;
-
-
-
-
-
-
-
 
 
 

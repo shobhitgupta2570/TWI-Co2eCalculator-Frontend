@@ -265,20 +265,20 @@ const App = () => {
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
         <ScrollView>
         <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
-        <View className=" mt-6 h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+        <View className=" mt-6 h-[40px] w-[250px] ml-[70px]  flex items-center justify-center bg-gray-50">
           
-            <Text className="text-xl">{result && result.co2Emission}   kg</Text>
+            <Text className="text-xl font-semibold blink">{result && result.co2Emission}   kg</Text>
            
         </View>
 
-        <View className="h-[30px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+        <View className="h-[30px] w-[250px] ml-[70px]  flex items-center justify-center bg-gray-50">
           
-          <Text className="text-xl">or</Text>
+          <Text className="text-xl">Equivalent to </Text>
          
       </View>
-        <View className="h-[40px] w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
+        <View className="h-[40px] w-[250px] ml-[70px]  flex items-center justify-center bg-gray-50">
           
-            <Text className="text-xl">{result && (result.co2Emission/1000).toFixed(1)}   unit</Text>
+            <Text className="text-xl font-semibold">{result && (result.co2Emission/1000).toFixed(1)}   unit</Text>
            
         </View>
 

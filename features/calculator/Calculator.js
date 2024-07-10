@@ -158,6 +158,38 @@ const App = () => {
             />
             </View> */}
 {/* <View style={styles.container}> */}
+{/* <View className="flex-row items-center mx-[12%] w-[80%]">
+      <TextInput
+      className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
+        // style={styles.input}
+        value={box1}
+        onChangeText={handleBox1Change}
+        // keyboardType="numeric"
+        maxLength={2}
+        ref={box1Ref}
+      />
+      <TextInput
+      className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
+        // style={styles.input}
+        value={box2}
+        onChangeText={handleBox2Change}
+        // keyboardType="numeric"
+        maxLength={4}
+        ref={box2Ref}
+      />
+      <TextInput
+      className="my-2 pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%]"
+        // style={styles.input}
+        value={box3}
+        onChangeText={handleBox3Change}
+        onBlur={handleBox3Blur}
+        keyboardType="numeric"
+        maxLength={4}
+        ref={box3Ref}
+      />
+      
+    </View> */}
+
 <View className="flex-row items-center mx-[12%] w-[80%]">
       <TextInput
       className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
