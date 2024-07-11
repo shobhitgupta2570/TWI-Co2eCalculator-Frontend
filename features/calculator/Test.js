@@ -98,7 +98,7 @@ const App = () => {
   <View className=" h-[100%]">
     <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
       <View className="w-[100%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
-        <Text className="mt-[40px] text-2xl ml-[120px]">Hello, {userInfo?userInfo.userName:"Name"}</Text>
+        <Text className="mt-[50px] text-2xl ml-[120px]">नमस्ते {userInfo?userInfo.userName:"Name"}</Text>
         <TouchableOpacity onPress={(()=>navigation.navigate("Profile"))} className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
         <FontAwesome name="user-o" size={24} color="black" /></TouchableOpacity>
       </View>
@@ -263,13 +263,16 @@ const App = () => {
            keyboardType="numeric"
          /> */}
           
-        <View className="mx-[65px]  flex-row justify-center">
+        <View style={styles.container}>
+        {/* // className="mx-[65px]  flex-row justify-center" */}
          <CheckBox
+         style={{backgroundColor: 'transparent', borderWidth: 0}}
         title='By checking this box, you agree to our terms and conditions'
         checked={isChecked}
         onPress={handleCheckBox}
+        containerStyle={styles.checkBoxContainer}
       /> 
-      <TouchableOpacity><Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text></TouchableOpacity>
+      {/* <TouchableOpacity><Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text></TouchableOpacity> */}
         </View>
 
          <TouchableOpacity onPress={handleSubmit}>
@@ -289,14 +292,41 @@ const App = () => {
    </ScrollView>
    
       </KeyboardAvoidingView>
-      <View className="flex-1 flex-row items-center justify-center mt-0">
+      {/* <View className="flex-1 flex-row items-center justify-center mt-0">
         <Text className="text-white">Made in</Text>
         <Image
           className=" ml-2"
           source={require("../../assets/images/image 10.png")}
           style={{ width: 40, height: 22 }}
         />
+      </View> */}
+
+<View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+        <View>
+        <Image
+          className="ml-0"
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
+        />
+        </View>
+     
+     <View className="flex-row"> 
+      <Text className="text-white pl-6">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        </View>
+       <View>
+        <Image
+          className=" ml-11"
+          source={require("../../assets/images/make-in-India-logo.jpg")}
+          style={{ width: 80, height: 48 }}
+        />
+        </View>
       </View>
+
     </ImageBackground>
   </View>
 )};
@@ -328,6 +358,16 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlign: 'center',
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkBoxContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
+
 });
 
 export default App;

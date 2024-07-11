@@ -339,17 +339,43 @@ const App = () => {
          </ScrollView>
      
       </KeyboardAvoidingView>
-      <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+      {/* <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
         <View>
         <Image
           className="ml-0"
-          source={require("../../assets/images/make-in-India-logo.jpg")}
-          style={{ width: 80, height: 48 }}
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
         />
         </View>
      
      <View className="flex-row"> 
-      <Text className="text-white">Made in</Text>
+      <Text className="text-white pl-6">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        </View>
+       <View>
+        <Image
+          className=" ml-11"
+          source={require("../../assets/images/make-in-India-logo.jpg")}
+          style={{ width: 80, height: 48 }}
+        />
+        </View>
+      </View> */}
+      
+      <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+        <View>
+        <Image
+          className="ml-0"
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
+        />
+        </View>
+     
+     <View className="flex-row"> 
+      <Text className="text-white pl-6">Made in</Text>
         <Image
           className=" ml-2"
           source={require("../../assets/images/image 10.png")}
@@ -364,7 +390,7 @@ const App = () => {
         />
         </View>
       </View>
-      
+
     </ImageBackground>
   </View>
 )};
