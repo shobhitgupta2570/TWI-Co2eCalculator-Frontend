@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { calculateResultAsync, selectUserInfo } from './calculatorSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import '../styles.css'; 
+
 
 
 const App = () => {
@@ -54,7 +54,7 @@ const App = () => {
   };
 
   const handleBox3Blur = () => {
-    const totalDigits = box2.length + box3.length;
+    const totalDigits =  box2.length + box3.length;
     if (totalDigits === 9) {
       const newBox2 = box2.slice(0, -1);
       const newBox3 = box2.slice(-1) + box3;
@@ -137,29 +137,11 @@ const App = () => {
            value={values.VechileNumber}
            placeholder='Vechile Number'
          /> */}
-         <Text className="text-xl  mb-1 text-center mt-6">Vehicle Number</Text>
-         {/* <View className="flex-row items-center mx-[12%] w-[80%]">
-         <TextInput
-              className=" my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[50%]"
-              onChangeText={(text) => setVehiclePart1(text)}
-              onBlur={handleBlur('VechileNumber')}
-              value={vehiclePart1}
-              placeholder=''
-            />
-            {(errors.vechilePart1 && touched.vechileNumber1) &&
-                  <Text style={{ color: 'red' }}>{errors.userName}</Text>
-                }
-            <TextInput
-              className=" my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
-              onChangeText={(text) => setVehiclePart2(text)}
-              onBlur={handleBlur('VechileNumber')}
-              value={vehiclePart2}
-              placeholder=''
-            />
-            </View> */}
-{/* <View style={styles.container}> */}
-{/* <View className="flex-row items-center mx-[12%] w-[80%]">
-      <TextInput
+         <Text className="text-xl text-center mr-11 mb-1 mt-6">Vehicle Number</Text>
+  
+
+<View className="flex-row items-center mx-[12%] w-[80%]">
+      {/* <TextInput
       className="my-2 rounded-xl border-2 pl-[10%] text-black-200 text-lg font-semibold w-[20%]"
         // style={styles.input}
         value={box1}
@@ -167,33 +149,9 @@ const App = () => {
         // keyboardType="numeric"
         maxLength={2}
         ref={box1Ref}
-      />
+      /> */}
       <TextInput
-      className="my-2 mx-[5%] pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%]"
-        // style={styles.input}
-        value={box2}
-        onChangeText={handleBox2Change}
-        // keyboardType="numeric"
-        maxLength={4}
-        ref={box2Ref}
-      />
-      <TextInput
-      className="my-2 pl-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%]"
-        // style={styles.input}
-        value={box3}
-        onChangeText={handleBox3Change}
-        onBlur={handleBox3Blur}
-        keyboardType="numeric"
-        maxLength={4}
-        ref={box3Ref}
-      />
-      
-    </View> */}
-
-<View className="flex-row items-center justify-center gap-4 ">
-     
-      <TextInput
-      className="my-2 px-[8%]  text-center rounded-xl border-2 text-black-200 text-lg font-semibold "
+      className="my-2 mx-[5%] rounded-xl border-2 text-black-200 text-lg font-semibold w-[40%] text-center"
         // style={styles.input}
         value={box2}
         onChangeText={handleBox2Change}
@@ -202,7 +160,7 @@ const App = () => {
         ref={box2Ref}
       />
       <TextInput
-      className="my-2 px-[6%] text-center rounded-xl border-2 text-black-200 text-lg font-semibold"
+      className="my-2 rounded-xl border-2 text-black-200 text-lg font-semibold w-[30%] text-center"
         // style={styles.input}
         value={box3}
         onChangeText={handleBox3Change}
@@ -213,15 +171,17 @@ const App = () => {
       />
       
     </View>
-           {/* <View className="flex-cols-3 w-[100%] bg-red-400">     
-           
-            <View className="w-[10%] bg-blue-200">
-              <Text className=" text-lg">
-            Vertical Text</Text>
-            </View>
-            <View>
-            <Text className="text-xl  mb-1 text-center mt-2">Source Pincode</Text>
-           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center "
+
+    <View className="w-[100%]  h-[280px] flex-row ">
+
+      <View className=" w-[15%] h-full flex  justify-center">
+      <Text className="-rotate-90 text-xl font-semibold  whitespace-nowrap">ment</Text>
+        <Text className="-rotate-90 text-xl  font-semibold mt-[28px] whitespace-nowrap">Enviro</Text>
+        <Text className="-rotate-90 text-xl mt-[40px] mb-4 font-semibold whitespace-nowrap">#Save</Text>
+      </View>
+      <View className=" w-[70%] h-[100%]">
+      <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
            onChangeText={handleChange('SourcePincode')}
            onBlur={handleBlur('SourcePincode')}
            value={values.SourcePincode}
@@ -229,118 +189,34 @@ const App = () => {
            keyboardType="numeric"
          />
         
-         <Text className="text-xl  mb-1 text-center mt-2">Destination Pincode</Text>
-           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Destination Pincode</Text>
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
            onChangeText={handleChange('DestinationPincode')}
            onBlur={handleBlur('DestinationPincode')}
            value={values.DestinationPincode}
            placeholder='Destination Pincode'
            keyboardType="numeric"
          />
-         <Text className="text-xl  mb-1 text-center mt-2">Loaded Weight</Text>
-           <TextInput className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Loaded Weight</Text>
+           <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
            onChangeText={handleChange('LoadedWeight')}
            onBlur={handleBlur('LoadedWeight')}
            value={values.LoadedWeight}
            placeholder='Loaded Weight'
            keyboardType="numeric"
          />
-         </View>
+      </View>
+      <View className=" w-[15%] h-full flex  justify-center">
+      <Text className="rotate-90 text-xl mt-[20px] font-semibold whitespace-nowrap">#Gree</Text>
+      <Text className="rotate-90 text-xl mt-[27px] font-semibold whitespace-nowrap">n</Text>
+        <Text className="rotate-90 text-xl font-semibold mt-[3px] whitespace-nowrap">Gener</Text>
+        <Text className="rotate-90 text-xl font-semibold mt-[28px] whitespace-nowrap">ation</Text>
+       
+      </View>
 
-         <View className="w-[10%] bg-blue-200"></View>
-
-         </View>   */}
-         {/* <View className="flex-cols-3 w-[100%] bg-red-400 flex flex-row">
-  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
-    <Text className="text-lg transform -rotate-90">
-      Vertical Text
-    </Text>
-  </View>
-
-  <View className="flex-1">
-    <Text className="text-xl mb-1 text-center mt-2">Source Pincode</Text>
-    <TextInput
-      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('SourcePincode')}
-      onBlur={handleBlur('SourcePincode')}
-      value={values.SourcePincode}
-      placeholder="Source Pincode"
-      keyboardType="numeric"
-    />
-    
-    <Text className="text-xl mb-1 text-center mt-2">Destination Pincode</Text>
-    <TextInput
-      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('DestinationPincode')}
-      onBlur={handleBlur('DestinationPincode')}
-      value={values.DestinationPincode}
-      placeholder="Destination Pincode"
-      keyboardType="numeric"
-    />
-    
-    <Text className="text-xl mb-1 text-center mt-2">Loaded Weight</Text>
-    <TextInput
-      className="mx-[25%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('LoadedWeight')}
-      onBlur={handleBlur('LoadedWeight')}
-      value={values.LoadedWeight}
-      placeholder="Loaded Weight"
-      keyboardType="numeric"
-    />
-  </View>
-
-  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
-    <Text className="text-lg transform -rotate-90">
-      Vertical Text
-    </Text>
-  </View>
-</View> */}
-<View className="flex flex-row w-full bg-red-400">
-  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
-    <Text className="text-lg transform -rotate-90 whitespace-nowrap">
-      Vertical Text
-    </Text>
-  </View>
-
-  <View className="w-[80%] flex flex-col items-center">
-    <Text className="text-xl mb-1 text-center mt-2">Source Pincode</Text>
-    <TextInput
-      className="w-[50%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('SourcePincode')}
-      onBlur={handleBlur('SourcePincode')}
-      value={values.SourcePincode}
-      placeholder="Source Pincode"
-      keyboardType="numeric"
-    />
-    
-    <Text className="text-xl mb-1 text-center mt-2">Destination Pincode</Text>
-    <TextInput
-      className="w-[50%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('DestinationPincode')}
-      onBlur={handleBlur('DestinationPincode')}
-      value={values.DestinationPincode}
-      placeholder="Destination Pincode"
-      keyboardType="numeric"
-    />
-    
-    <Text className="text-xl mb-1 text-center mt-2">Loaded Weight</Text>
-    <TextInput
-      className="w-[50%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
-      onChangeText={handleChange('LoadedWeight')}
-      onBlur={handleBlur('LoadedWeight')}
-      value={values.LoadedWeight}
-      placeholder="Loaded Weight"
-      keyboardType="numeric"
-    />
-  </View>
-
-  <View className="w-[10%] bg-blue-200 flex justify-center items-center">
-    <Text className="text-lg transform -rotate-90 whitespace-nowrap">
-      Vertical Text
-    </Text>
-  </View>
 </View>
-
+                  
+          
        
        <TouchableOpacity onPress={toggleAdditionalDetails}>
                     <Text className="text-xl font-[500] ml-10 mb-1 mt-4">
@@ -452,51 +328,6 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlign: 'center',
   },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
-  verticalText: {
-    transform: [{ rotate: '90deg' }],
-    fontSize: 20,
-  },
 });
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

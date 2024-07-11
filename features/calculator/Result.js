@@ -197,12 +197,12 @@ const App = () => {
             <p>Date: <span class="highlight" id="date">${result && result.certificateIssueDate}</span></p>
         </div>
         <h1>Certificate of CO2 Emission</h1>
-        <p>This is to certify that the vehicle owned by</p>
+        <p>This is to certify that the vehicle owned/hired by</p>
         <p class="highlight" id="vehicleOwner">${result && result.vehicleOwner}</p>
         <p>with vehicle number</p>
         <p class="highlight" id="vehicleNumber">${result && result.vehicleNumber}</p>
         <p>has emitted</p>
-        <p><span class="highlight" id="co2Emission">${result && result.co2Emission}</span> unit CO2</p>
+        <p><span class="highlight" id="co2Emission">${result && (result.co2Emission/1000).toFixed(1)}</span> unit CO2</p>
 
         <div class="signature-section">
             <img src="https://github.com/nitish1899/Image/blob/main/pmModiSigature.jpg?raw=true" alt="Signature"  height="50" width="200">
@@ -256,7 +256,7 @@ const App = () => {
   <View className=" h-[100%] ">
     <ImageBackground source={require("../../assets/images/bg4.jpg")} resizeMode="cover" className="h-[100%] flex items-center">
       <View className="w-[105%] h-[13%] bg-cyan-200 rounded-b-[100px] flex-row">
-        <Text className="mt-[40px] text-2xl ml-[120px]">Hello, {userInfo?userInfo.userName:"Name"}</Text>
+        <Text className="mt-[50px] text-2xl ml-[120px]">नमस्ते  {userInfo?userInfo.userName:"Name"}</Text>
         <View className="mt-[40px] ml-[60px] flex items-center justify-center h-[40px] w-[40px] bg-white rounded-3xl">
         {/* <FontAwesome name="user-o" size={24} color="black" /> */}
         <FontAwesome5 name="cloud-moon" size={24} color="black" /></View>
@@ -264,7 +264,7 @@ const App = () => {
      
       <KeyboardAvoidingView className=" h-[70%] w-[100%] mt-8">
         <ScrollView>
-        <Text className="text-2xl ml-[80px] mb-1">Total Carbon Emission</Text>
+        <Text className="text-2xl ml-[80px] mb-1">Total Carbon Footprint</Text>
         <View className=" mt-6 h-[40px] w-[250px] ml-[70px]  flex items-center justify-center bg-gray-50">
           
             <Text className="text-xl font-semibold blink">{result && result.co2Emission}   kg</Text>
@@ -298,7 +298,7 @@ const App = () => {
       </Animated.View>
       { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">
-            <Text className="text-xl pr-2">Plant  {result && (result.co2Emission/1000).toFixed(0)} trees</Text>
+            <Text className="text-xl pr-2">Plant  {result && (result.co2Emission/1000).toFixed(0)*40} trees</Text>
             {/* <Image
         source={{ uri: "../../assets/images/bg4.jpg" }}
         style={styles.image}
@@ -311,7 +311,7 @@ const App = () => {
         <Text className="text-xl pl-1"> to offset </Text>
         </View>
         <View>
-        <Text className="text-xl px-[5%] ml-[10%] mx-auto">for your co2 Emission</Text>
+        <Text className="text-xl px-[5%] ml-[10%] mx-auto">for your co2 Footprint</Text>
         </View>
         </View>}
     </View>
@@ -332,21 +332,37 @@ const App = () => {
         </>
       )}
     </View>
+
+    <View className="mt-[80px]">
+      <Text className="text-center text-green-600 font-semibold text-xl">#Save Enviroment    #Green generation</Text>
+    </View>
          </ScrollView>
      
       </KeyboardAvoidingView>
-      <View className="flex-1 flex-row items-center justify-center mt-0">
-        <Text className="text-white">Made in</Text>
+      <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+        <View>
+        <Image
+          className="ml-0"
+          source={require("../../assets/images/make-in-India-logo.jpg")}
+          style={{ width: 80, height: 48 }}
+        />
+        </View>
+     
+     <View className="flex-row"> 
+      <Text className="text-white">Made in</Text>
         <Image
           className=" ml-2"
           source={require("../../assets/images/image 10.png")}
           style={{ width: 40, height: 22 }}
         />
+        </View>
+       <View>
         <Image
-          className=" ml-4"
-          source={require("../../assets/images/lion2.png")}
-          style={{ width: 40, height: 22 }}
+          className=" ml-11"
+          source={require("../../assets/images/make-in-India-logo.jpg")}
+          style={{ width: 80, height: 48 }}
         />
+        </View>
       </View>
       
     </ImageBackground>
