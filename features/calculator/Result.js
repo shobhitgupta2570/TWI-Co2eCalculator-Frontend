@@ -287,14 +287,23 @@ const App = () => {
         {resulterror &&<View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-        <View style={styles.container} className="relative">
+        <View  className="relative h-[150px]">
       <Animated.View style={{ transform: [{ translateX }] }}>
+        <View className="w-[200px] h-[180px] relative">
+      
         <LottieView
           autoPlay
           ref={animation}
-          style={styles.lottieView}
+          className="w-[200px] h-[180px]"
           source={require('../../Truck1.json')}
         />
+        <Image
+          className="w-[200px] h-[180px] z-1 "
+          source={require("../../assets/images/tranvue.jpg")}
+          // style={{ width: 22, height: 20 }}
+        />
+        </View>
+         
       </Animated.View>
       { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">

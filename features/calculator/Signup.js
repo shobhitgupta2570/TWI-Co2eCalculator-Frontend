@@ -247,13 +247,27 @@ const App = () => {
                 }         
           
         <View className="mx-[65px]  flex-row  justify-center">
-         <CheckBox
+         {/* <CheckBox
         title='By checking this box, you agree to our terms and conditions'
         checked={isChecked}
         onPress={handleCheckBox}
+      />  */}
+       <View >
+        {/* // className="mx-[65px]  flex-row justify-center" */}
+         <CheckBox
+         style={{backgroundColor: 'transparent', borderWidth: 0}}
+        title='By checking this box, you agree to our terms and conditions'
+        checked={isChecked}
+        onPress={handleCheckBox}
+        containerStyle={ {
+          backgroundColor: 'transparent',
+          borderWidth: 0,
+        }}
       /> 
+      {/* <TouchableOpacity><Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text></TouchableOpacity> */}
+        </View>
       <TouchableOpacity onPress={openModal1}>
-        <Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text>
+        {/* <Text className="text-blue-800 font-bold w-[50px] pl-2 bg-white text-lg mt-2 mr-11 pt-5 h-[70px]">T&C</Text> */}
         </TouchableOpacity>
         <Modal
         animationType="slide"
@@ -301,13 +315,38 @@ const App = () => {
    </ScrollView>
    
       </KeyboardAvoidingView>
-      <View className="flex-1 flex-row items-center justify-center mt-0">
+      {/* <View className="flex-1 flex-row items-center justify-center mt-0">
         <Text className="text-white">Made in</Text>
         <Image
           className=" ml-2"
           source={require("../../assets/images/image 10.png")}
           style={{ width: 40, height: 22 }}
         />
+      </View> */}
+       <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+        <View>
+        <Image
+          className="ml-0"
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
+        />
+        </View>
+     
+     <View className="flex-row"> 
+      <Text className="text-white pl-6">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        </View>
+       <View>
+        <Image
+          className=" ml-11"
+          source={require("../../assets/images/make-in-India-logo.jpg")}
+          style={{ width: 80, height: 48 }}
+        />
+        </View>
       </View>
     </ImageBackground>
   </View>
