@@ -307,7 +307,8 @@ const App = () => {
       </Animated.View>
       { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">
-            <Text className="text-xl pr-2">Plant  {result && ((result.co2Emission/1000).toFixed(0)+1)*40} trees</Text>
+            {/* <Text className="text-xl pr-2">Plant  {result && ((result.co2Emission/1000).toFixed(0))*40} trees</Text> */}
+            <Text className="text-xl pr-2">Plant  {result && (Math.ceil(result.co2Emission / 1000))*40} trees</Text>
             {/* <Image
         source={{ uri: "../../assets/images/bg4.jpg" }}
         style={styles.image}

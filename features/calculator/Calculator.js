@@ -202,7 +202,7 @@ const App = () => {
            onChangeText={handleChange('LoadedWeight')}
            onBlur={handleBlur('LoadedWeight')}
            value={values.LoadedWeight}
-           placeholder='Loaded Weight'
+           placeholder='Loaded Weight (in kg)'
            keyboardType="numeric"
          />
       </View>
