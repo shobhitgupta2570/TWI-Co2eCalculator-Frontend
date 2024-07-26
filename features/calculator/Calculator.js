@@ -1,3 +1,6 @@
+
+
+
 import React, { useEffect, useRef, useState } from 'react';
 import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -28,6 +31,24 @@ const App = () => {
   const box1Ref = useRef(null);
   const box2Ref = useRef(null);
   const box3Ref = useRef(null);
+
+  const [showImage, setShowImage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowImage(true);
+
+      const blinkInterval = setInterval(() => {
+        setShowImage(prevShowImage => !prevShowImage);
+      }, 10000);
+
+      // Clear the interval if the component is unmounted
+      return () => clearInterval(blinkInterval);
+    }, 5000);
+
+    // Clear the timeout if the component is unmounted
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleBox1Change = (text) => {
     if (text.length <= 2) {
@@ -72,6 +93,8 @@ const App = () => {
   const result = useSelector((state) => state.calculator.result); // Adjust according to your state structure
   const resultStatus = useSelector((state) => state.calculator.status); // Assuming you have status in your state
   const error = useSelector((state) => state.calculator.error);
+
+  
 
   useEffect(() => {
     if (resultStatus === 'idle' && result) {
@@ -174,10 +197,16 @@ const App = () => {
 
     <View className="w-[100%]  h-[280px] flex-row ">
 
-      <View className=" w-[15%] h-full flex  justify-center">
-      <Text className="-rotate-90 text-xl font-semibold  whitespace-nowrap">ment</Text>
+      <View className=" w-[15%] h-full flex pl-4 justify-center">
+      {showImage && (<Image
+          className="h-[110%]"
+          source={require("../../assets/saveE.png")}
+          
+        />
+      )}
+      {/* <Text className="-rotate-90 text-xl font-semibold  whitespace-nowrap">ment</Text>
         <Text className="-rotate-90 text-xl  font-semibold mt-[28px] whitespace-nowrap">Enviro</Text>
-        <Text className="-rotate-90 text-xl mt-[40px] mb-4 font-semibold whitespace-nowrap">#Save</Text>
+        <Text className="-rotate-90 text-xl mt-[40px] mb-4 font-semibold whitespace-nowrap">#Save</Text> */}
       </View>
       <View className=" w-[70%] h-[100%]">
       <Text className="text-xl  mb-1 ml-[12%] mt-2">Source Pincode</Text>
@@ -197,7 +226,7 @@ const App = () => {
            placeholder='Destination Pincode'
            keyboardType="numeric"
          />
-         <Text className="text-xl  mb-1 ml-[12%] mt-2">Loaded Weight</Text>
+         <Text className="text-xl  mb-1 ml-[12%] mt-2">Loaded Weight (in kg)</Text>
            <TextInput className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold text-center"
            onChangeText={handleChange('LoadedWeight')}
            onBlur={handleBlur('LoadedWeight')}
@@ -206,11 +235,17 @@ const App = () => {
            keyboardType="numeric"
          />
       </View>
-      <View className=" w-[15%] h-full flex  justify-center">
-      <Text className="rotate-90 text-xl mt-[20px] font-semibold whitespace-nowrap">#Gree</Text>
+      <View className=" w-[15%] h-full flex -mt-4 pr-4 justify-center">
+      {showImage && (<Image
+          className="h-[110%]"
+          source={require("../../assets/GreenG.png")}
+          
+        />
+      )}
+      {/* <Text className="rotate-90 text-xl mt-[20px] font-semibold whitespace-nowrap">#Gree</Text>
       <Text className="rotate-90 text-xl mt-[27px] font-semibold whitespace-nowrap">n</Text>
         <Text className="rotate-90 text-xl font-semibold mt-[3px] whitespace-nowrap">Gener</Text>
-        <Text className="rotate-90 text-xl font-semibold mt-[28px] whitespace-nowrap">ation</Text>
+        <Text className="rotate-90 text-xl font-semibold mt-[28px] whitespace-nowrap">ation</Text> */}
        
       </View>
 
@@ -219,28 +254,28 @@ const App = () => {
           
        
        <TouchableOpacity onPress={toggleAdditionalDetails}>
-                    <Text className="text-xl font-[500] ml-10 mb-1 mt-4">
+                    <Text className="text-xl font-[500] mx-auto mb-1 mt-4">
                       Additional Details (optional) {showAdditionalDetails ? '▲' : '▼'}
                     </Text>
                   </TouchableOpacity>
                   {showAdditionalDetails && (
                     <>
-                      <Text className="text-xl  mb-1 ml-[12%] mt-2">Mobilisation Distance</Text>
+                      <Text className="text-xl  mb-1 mx-auto mt-2">Mobilisation Distance</Text>
                       <TextInput
-                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        className="mx-auto my-2 rounded-xl border-2 text-black-200 text-lg w-[50%] font-semibold text-center"
                         onChangeText={handleChange('MobilisationDistance')}
                         onBlur={handleBlur('MobilisationDistance')}
                         value={values.MobilisationDistance}
-                        placeholder='Mobilisation Distance (km)'
+                        placeholder='Mob Distance (km)'
                         keyboardType="numeric"
                       />
-                      <Text className="text-xl  mb-1 ml-[12%] mt-2">DeMobilisation Distance</Text>
+                      <Text className="text-xl  mb-1 mx-auto  mt-2">DeMobilisation Distance</Text>
                       <TextInput
-                        className="mx-[12%] my-2 rounded-xl border-2 text-black-200 text-lg font-semibold pl-[30px]"
+                        className="mx-auto my-2 rounded-xl border-2 text-black-200 text-lg w-[50%] font-semibold text-center"
                         onChangeText={handleChange('DeMobilisationDistance')}
                         onBlur={handleBlur('DeMobilisationDistance')}
                         value={values.DeMobilisationDistance}
-                        placeholder='DeMobilisation Distance (km)'
+                        placeholder='DeMob Distance (km)'
                         keyboardType="numeric"
                       />
                     </>
@@ -304,16 +339,16 @@ const App = () => {
         />
       </View> */}
 
-<View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
-        <View>
+<View className="flex-1 flex-row space-x-[6%] items-center  mt-0 w-[100%]">
+        <View className="w-[25%]">
         <Image
-          className="ml-0"
+          className="ml-2"
           source={require("../../assets/images/mantra.jpg")}
           style={{ width: 50, height: 50 }}
         />
         </View>
      
-     <View className="flex-row"> 
+     <View className="flex-row w-[25%]"> 
       <Text className="text-white pl-6">Made in</Text>
         <Image
           className=" ml-2"
@@ -321,11 +356,11 @@ const App = () => {
           style={{ width: 40, height: 22 }}
         />
         </View>
-       <View>
+       <View className="w-[35%]">
         <Image
-          className=" ml-11"
-          source={require("../../assets/images/make-in-India-logo.jpg")}
-          style={{ width: 80, height: 48 }}
+          className=" ml-11 w-[70%] h-[90%]"
+          source={require("../../assets/images/lion3.png")}
+          // style={{ width: 100, height: 58 }}
         />
         </View>
       </View>
@@ -374,9 +409,6 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
-
-
 
 
 

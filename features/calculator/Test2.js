@@ -288,7 +288,21 @@ const App = () => {
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
         <View  className="relative h-[150px]">
-      <Animated.View style={{ transform: [{ translateX }] }}>
+        <Animated.View style={{ transform: [{ translateX }] }}>
+                <View className="w-52 h-44 relative ">
+                <Image
+            source={require('../../assets/images/truck5.png')}
+            style={{ width: 200, height: 100, marginTop: 40 }}
+            resizeMode="contain"
+          />
+
+                  <Image
+                    source={require("../../assets/images/pureP.png")}
+                    className="w-16 h-16 absolute top-10 left-14"
+                  />
+                </View>
+              </Animated.View>
+      {/* <Animated.View style={{ transform: [{ translateX }] }}>
         <View className="w-[200px] h-[180px] relative">
       
         <LottieView
@@ -305,7 +319,7 @@ const App = () => {
         />
         </View>
          
-      </Animated.View>
+      </Animated.View> */}
       { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">
             {/* <Text className="text-xl pr-2">Plant  {result && ((result.co2Emission/1000).toFixed(0))*40} trees</Text> */}

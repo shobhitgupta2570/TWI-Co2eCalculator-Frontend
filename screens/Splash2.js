@@ -8,7 +8,7 @@ export default function App() {
       
         <Image
           className="mt-[50px] ml-[25px]"
-          source={require("../assets/images/tranvue.jpg")}
+          source={require("../assets/images/pureP.png")}
           style={{ width: 201, height: 181 }}
         />
       
