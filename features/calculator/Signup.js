@@ -323,7 +323,7 @@ const App = () => {
           style={{ width: 40, height: 22 }}
         />
       </View> */}
-       <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+       {/* <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
         <View>
         <Image
           className="ml-0"
@@ -345,6 +345,31 @@ const App = () => {
           className=" ml-11"
           source={require("../../assets/images/make-in-India-logo.jpg")}
           style={{ width: 80, height: 48 }}
+        />
+        </View>
+      </View> */}
+      <View className="flex-1 flex-row space-x-[6%] items-center  mt-0 w-[100%]">
+        <View className="w-[25%]">
+        <Image
+          className="ml-2"
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
+        />
+        </View>
+     
+     <View className="flex-row w-[25%]"> 
+      <Text className="text-white pl-6">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        </View>
+       <View className="w-[37%]">
+        <Image
+          className=" ml-11 w-[70%] h-[90%]"
+          source={require("../../assets/images/lion3.png")}
+          // style={{ width: 100, height: 58 }}
         />
         </View>
       </View>

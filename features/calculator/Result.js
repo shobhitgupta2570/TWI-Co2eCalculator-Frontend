@@ -287,8 +287,36 @@ const App = () => {
         {resulterror &&<View className="items-center justify-center mt-11">
         <Text className="text-xl text-red-700">{resulterror && resulterror} </Text></View>}
 
-        <View  className="relative h-[150px]">
-      <Animated.View style={{ transform: [{ translateX }] }}>
+        <View  className="h-40">
+
+        <Animated.View style={{ transform: [{ translateX }] }}>
+      <View className="w-52 h-44 relative">
+        <Image
+          source={require('../../assets/images/Truck6.png')}
+          style={{ height: 160, width: 160, zIndex: 10 }}
+          resizeMode="contain"
+        />
+        {/* <Image
+          source={require("../../assets/images/pureP.png")}
+          style={{ position: 'absolute', top: -40, left: 56, width: 80, height: 80, zIndex: 20 }}
+        /> */}
+      </View>
+    </Animated.View>
+        {/* <Animated.View style={{ transform: [{ translateX }] }}>
+                <View className="w-52 h-44 relative ">
+                <Image
+            source={require('../../assets/images/truck5.png')}
+            className="h-[150px] w-[160px] z-10"
+            resizeMode="contain"
+          />
+
+                  <Image
+                    source={require("../../assets/images/pureP.png")}
+                    className="w-20 h-20 z-20 -top-[40px] left-14"
+                  />
+                </View>
+              </Animated.View> */}
+      {/* <Animated.View style={{ transform: [{ translateX }] }}>
         <View className="w-[200px] h-[180px] relative">
       
         <LottieView
@@ -298,17 +326,18 @@ const App = () => {
           source={require('../../Truck1.json')}
         />
         <Image
-          className="w-[200px] h-[180px] z-1 "
+          className="w-[200px] h-[180px] "
+          style={{zIndex:1,position: 'absolute'}}
           source={require("../../assets/images/tranvue.jpg")}
           // style={{ width: 22, height: 20 }}
         />
         </View>
          
-      </Animated.View>
+      </Animated.View> */}
       { showText &&  <View className=" mt-11 absolute w-[250px] ml-[70px] rounded-2xl flex items-center justify-center">
           <View className="flex-row">
             {/* <Text className="text-xl pr-2">Plant  {result && ((result.co2Emission/1000).toFixed(0))*40} trees</Text> */}
-            <Text className="text-xl pr-2">Plant  {result && (Math.ceil(result.co2Emission / 1000))*40} trees</Text>
+            <Text className="text-xl pr-2">Plant  {result && (Math.ceil(result.co2Emission / 1000))*12} trees</Text>
             {/* <Image
         source={{ uri: "../../assets/images/bg4.jpg" }}
         style={styles.image}
@@ -329,15 +358,15 @@ const App = () => {
       {/* <View style={styles.container}> */}
         <View className="w-[70%] mx-auto ">
       <Button title="Print" onPress={print} />
-      <View style={styles.spacer} />
+      <View className="h-2"/>
       <Button title="Print to PDF file" onPress={printToFile} />
       {Platform.OS === 'ios' && (
         <>
-          <View style={styles.spacer} />
+          <View className="h-8" />
           <Button title="Select printer" onPress={selectPrinter} />
-          <View style={styles.spacer} />
+          <View className="h-8" />
           {selectedPrinter ? (
-            <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
+            <Text className="text-center">{`Selected printer: ${selectedPrinter.name}`}</Text>
           ) : undefined}
         </>
       )}
@@ -375,7 +404,7 @@ const App = () => {
         </View>
       </View> */}
       
-      <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
+      {/* <View className="flex-1 flex-row space-x-[10%] items-center  mt-0">
         <View>
         <Image
           className="ml-0"
@@ -395,42 +424,79 @@ const App = () => {
        <View>
         <Image
           className=" ml-11"
-          source={require("../../assets/images/make-in-India-logo.jpg")}
+          source={require("../../assets/images/lion3.png")}
           style={{ width: 80, height: 48 }}
         />
         </View>
-      </View>
+      </View> */}
 
+<View className="flex-1 flex-row space-x-[6%] items-center  mt-0 w-[100%]">
+        <View className="w-[25%]">
+        <Image
+          className="ml-2"
+          source={require("../../assets/images/mantra.jpg")}
+          style={{ width: 50, height: 50 }}
+        />
+        </View>
+     
+     <View className="flex-row w-[25%]"> 
+      <Text className="text-white pl-6">Made in</Text>
+        <Image
+          className=" ml-2"
+          source={require("../../assets/images/image 10.png")}
+          style={{ width: 40, height: 22 }}
+        />
+        </View>
+       <View className="w-[35%]">
+        <Image
+          className=" ml-11 w-[70%] h-[90%]"
+          source={require("../../assets/images/lion3.png")}
+          // style={{ width: 100, height: 58 }}
+        />
+        </View>
+      </View>
     </ImageBackground>
   </View>
 )};
 
-const styles = StyleSheet.create({
+// const styles = StyleSheet.create({
   
-  spacer: {
-    height: 8,
-  },
-  printer: {
-    textAlign: 'center',
-  },
-  animationContainer: {
-    // backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  container: {
-    // backgroundColor: '#ecf0f1',
-    height: 150,
-  },
-  lottieView: {
-    width: 200,
-    height: 180,
-  },
-  buttonContainer: {
-    // Adjust or remove padding/margins as needed
-    paddingTop: 0,
-  },
-});
+ 
+//   animationContainer: {
+//     // backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     flex: 1,
+//   },
+//   container: {
+//     // backgroundColor: '#ecf0f1',
+//     height: 150,
+//   },
+//   lottieView: {
+//     width: 200,
+//     height: 180,
+//   },
+ 
+// });
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

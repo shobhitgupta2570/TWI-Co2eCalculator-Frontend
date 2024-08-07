@@ -41,7 +41,7 @@ export default () => {
       {/* {splash1Visible && <Splash1 />} */}
       {splash2Visible && <Splash2 />}
       {!splash1Visible && !splash2Visible && (
-   <Stack.Navigator initialRouteName='Test2' screenOptions={{ headerShown: false }}>
+   <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
    <Stack.Screen name="Calculator" component={Calculator} />
    <Stack.Screen name="Calculator2" component={Calculator2} />
    <Stack.Screen name="Printer" component={Printer} />
