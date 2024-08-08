@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {ImageBackground, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, Image, ActivityIndicator, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Formik, Form, Field } from 'formik';
@@ -7,7 +7,7 @@ import { CheckBox } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 // import CheckBox from 'react-native-check-box';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync, selectIsAuthenticated, selectUserInfo, selectUserExist } from './calculatorSlice';
@@ -68,14 +68,69 @@ const App = () => {
     setModalVisible(false);
   };
 
+  const resultStatus = useSelector((state) => state.calculator.status); // Assuming you have status in your state
+  const error = useSelector((state) => state.calculator.error);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (isAuthenticated) {
+  //       // If the user is authenticated, prevent navigating back to the login screen
+  //       const backHandler = () => {
+  //         if (navigation.canGoBack()) {
+  //           navigation.goBack();
+  //           return true;
+  //         }
+  //         return false;
+  //       };
+
+  //       // Add event listener
+  //       const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+  //         e.preventDefault();
+  //         backHandler();
+  //       });
+
+  //       // Clean up event listener on component unmount
+  //       return unsubscribe;
+  //     }
+  //   }, [isAuthenticated])
+  // );
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (isAuthenticated) {
+  //       const onBackPress = (e) => {
+  //         e.preventDefault();
+  //       };
+
+  //       const unsubscribe = navigation.addListener('beforeRemove', onBackPress);
+
+  //       return () => {
+  //         unsubscribe();
+  //       };
+  //     }
+  //   }, [isAuthenticated, navigation])
+  // );
+
+
   useEffect(() => {
-    setIsLoading(false);
-    if (isAuthenticated) {
-      // Navigate to the next page
+    if (resultStatus === 'idle' && isAuthenticated) {
       setIsLoading(false);
       navigation.navigate('Calculator');
+    } else if (resultStatus === 'idle' && error) {
+      setIsLoading(false);
+      // Handle error if necessary
+      Alert.alert('Error', error); // Display error using Alert (or any other notification mechanism)
     }
-  }, [isAuthenticated, navigation]);
+  }, [resultStatus, isAuthenticated, error]);
+
+  // useEffect(() => {
+  //   setIsLoading(false);
+  //   if (isAuthenticated) {
+  //     // Navigate to the next page
+  //     setIsLoading(false);
+  //     navigation.navigate('Calculator');
+  //   }
+  // }, [isAuthenticated, navigation]);
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -97,7 +152,7 @@ const App = () => {
       
     }
     if (isChecked) {
-        console.log(values);
+        // console.log(values);
         // console.log(formData);
         dispatch(loginAsync(values));
         // Navigate to the next page
@@ -142,7 +197,7 @@ const App = () => {
      onSubmit={(values)=>{
       setIsLoading(true);
         if(true) {
-          console.log(isAuthenticated)
+          // console.log(isAuthenticated)
           console.log(values);
             dispatch(loginAsync(values));
           if(isAuthenticated){

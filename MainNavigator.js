@@ -12,14 +12,15 @@ import Profile from './features/calculator/Profile';
 import Printer from './features/calculator/Printer';
 import Splash1 from './screens/Splash1';
 import Splash2 from './screens/Splash2';
-
+import { selectIsAuthenticated } from './features/calculator/calculatorSlice';
+import { useSelector } from 'react-redux';
 const Stack = createNativeStackNavigator();
 
 export default () => {
 
    const [splash1Visible, setSplash1Visible] = useState(true);
   const [splash2Visible, setSplash2Visible] = useState(false);
-
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setSplash1Visible(false);
@@ -41,18 +42,30 @@ export default () => {
       {/* {splash1Visible && <Splash1 />} */}
       {splash2Visible && <Splash2 />}
       {!splash1Visible && !splash2Visible && (
+       
+
    <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
-   <Stack.Screen name="Calculator" component={Calculator} />
-   <Stack.Screen name="Calculator2" component={Calculator2} />
-   <Stack.Screen name="Printer" component={Printer} />
-   <Stack.Screen name="Result" component={Result} />
-   <Stack.Screen name="Test" component={Test} />
-   <Stack.Screen name="Test2" component={Test2} />
-   <Stack.Screen name="Signup" component={Signup} />
-   <Stack.Screen name="Profile" component={Profile} />
-   <Stack.Screen name="Login" component={Login} />
+     {isAuthenticated ? (
+      <>
+      <Stack.Screen name="Calculator" component={Calculator} />
+      <Stack.Screen name="Calculator2" component={Calculator2} />
+      <Stack.Screen name="Printer" component={Printer} />
+      <Stack.Screen name="Result" component={Result} />
+      <Stack.Screen name="Test" component={Test} />
+      <Stack.Screen name="Test2" component={Test2} />
+      
+      <Stack.Screen name="Profile" component={Profile} />
+      </>
+     ) : (
+      <>
+      <Stack.Screen name="Login" component={Login} />
    <Stack.Screen name="Splash1" component={Splash1} />
    <Stack.Screen name="Splash2" component={Splash2} />
+   <Stack.Screen name="Signup" component={Signup} />
+   </>
+     )}
+   
+   
 </Stack.Navigator>
    )}  
  </>

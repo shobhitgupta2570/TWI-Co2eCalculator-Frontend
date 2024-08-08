@@ -51,13 +51,13 @@ export const signupAsync = createAsyncThunk(
 
 export const loginAsync = createAsyncThunk(
   'calculator/login',
-  async (loginInfo ) => {
+  async (loginInfo, { rejectWithValue } ) => {
     try{
       const response = await login(loginInfo);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
     }catch(error){
-      // console.log(error);
+      console.log(error);
       return rejectWithValue(error);
     }
   }
@@ -149,8 +149,9 @@ export const calculatorSlice = createSlice({
       .addCase(loginAsync.rejected, (state, action) => {
         state.status = 'idle';
         state.isAuthenticated = false;
-        state.error = action.payload;
-        console.log(state.isAuthenticated);
+        state.error = action.payload.error;
+        console.log(action.payload.error);
+        // console.log(state.isAuthenticated);
         state.userExist = false;
       })
       .addCase(sendNumberAsync.pending, (state) => {

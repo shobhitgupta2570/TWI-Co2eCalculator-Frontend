@@ -20,7 +20,7 @@ export function calculateResult(info) {
       reject(error);
     }
     }catch (error) {
-      // console.log(error);
+      console.log(error);
       reject(error);
     }
   });
@@ -37,14 +37,17 @@ export function login(loginInfo) {
     });
     if (response.ok) {
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     resolve({ data });
   } else {
-    const error = await response.text();
+    const error = await response.json();
+    // console.log(error);
     reject(error);
   }
   }catch (error) {
+    // console.log(error);
     reject(error);
+
   }
   });
 }
