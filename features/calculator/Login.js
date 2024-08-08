@@ -203,7 +203,6 @@ const App = () => {
           if(isAuthenticated){
             
             // api for Login
-            
             // Navigate to the next page
             navigation.navigate('Calculator');
           }

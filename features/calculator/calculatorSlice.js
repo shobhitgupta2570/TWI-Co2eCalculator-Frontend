@@ -144,6 +144,7 @@ export const calculatorSlice = createSlice({
         state.status = 'idle';
         state.isAuthenticated = true;
         state.userInfo = action.payload.data;
+        state.error = null;
         // console.log(action.payload);
       })
       .addCase(loginAsync.rejected, (state, action) => {
